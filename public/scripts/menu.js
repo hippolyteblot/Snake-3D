@@ -13,7 +13,6 @@ function printInfos(optionSelected) {
     for (var i = 0; i < infos.length; i++) {
         infos[i].style.display = 'none';
     }
-    console.log(document.getElementById(optionSelected));
     document.getElementById(optionSelected).style.display = 'block';
 }
 
@@ -69,5 +68,11 @@ function start() {
     document.body.style.overflow = 'hidden';
 
     // On appelle le script qui fait tourner le jeu
-    // Todo: Créer le script de lancemement
+    script.src = 'scripts/gameEngine.js';
+    script.type = 'module';
+    head.appendChild(script);
+
 }
+
+// Quand le boutton #start est cliqué, on lance la fonction start()
+document.getElementById('start').addEventListener('click', start);
