@@ -240,3 +240,54 @@ p {
       box-shadow: 0 0 0 5px rgba(0, 255, 255, 0);
   }
 }
+
+/* Style des scores */
+.score {
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  border: 4px solid;
+  font-weight: 900;
+  width: fit-content;
+  font-family: 'Cubic Block', sans-serif;
+  position: absolute;
+  font-size: 30px;
+}
+.score p {
+  display: inline;
+}
+.score span {
+  font-size: 1.2em;
+}
+
+#blockScore1 {
+  border-color: rgb(136, 0, 255);
+  background-color: rgb(240, 223, 255);
+  color: rgb(136, 0, 255);
+  top: 10px;
+  left: 10px;
+}
+
+#blockScore2 {
+  border-color: rgb(255, 165, 0);
+  background-color: rgb(255, 229, 204);
+  color: rgb(255, 165, 0);
+  top: 10px;
+  right: 10px;
+}
+
+#blockScore3 {
+  border-color: rgb(0, 38, 255);
+  background-color: rgb(204, 229, 255);
+  color: rgb(0, 38, 255);
+  bottom: 10px;
+  left: 10px;
+}
+
+#blockScore4 {
+  border-color: rgb(255, 0, 238);
+  background-color: rgb(255, 204, 255);
+  color: rgb(255, 0, 238);
+  bottom: 10px;
+  right: 10px;
+}
