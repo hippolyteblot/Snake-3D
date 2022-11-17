@@ -1,23 +1,139 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="generator" content="GitLab Pages">
-    <title>Plain HTML site using GitLab Pages</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div class="navbar">
-      <a href="https://pages.gitlab.io/plain-html/">Plain HTML Example</a>
-      <a href="https://gitlab.com/pages/plain-html/">Repository</a>
-      <a href="https://gitlab.com/pages/">Other Examples</a>
-    </div>
+    <title>Snake 3D</title>
+</head>
+<body>
+    <article>
+        <h1>Snake 3D</h1>
+        <!-- Sélection du mode de jeu -->
+        <div class="gameMode">
+            <h2>Choose your game mode</h2>
+            <select id="selectGameMode">
+                <option value="classic">Classic</option>
+                <option value="race">Race</option>
+                <option value="survival">Survival</option>
+            </select>
+            <!-- Description des modes de jeu -->
+            <p class="info" id="classic">Classic mode is the original game mode. You have to eat apples to grow your snake and avoid the walls.</p>
+            <p class="info" id="race">Race mode aims to be the first to reach the finish line, which is on the right. Eat apples to speed up and kill your opponents.</p>
+            <p class="info" id="survival">In survival mode, there is no apple. Here, each snake will grow every 3 seconds... Be the last survivor!
+        </div>
+        <!-- Sélection du nombre de joueurs -->
+        <div class="nbPlayer">
+            <h2>Choose the number of players</h2>
+            <select id="selectNbPlayer">
+                <option value="1p">1 player</option>
+                <option value="2p">2 players</option>
+                <option value="3p">3 players</option>
+                <option value="4p">4 players</option>
+            </select>
+        </div>
 
-    <h1>Hello World!</h1>
+        <br />
 
-    <p>
-      This is a simple plain-HTML website on GitLab Pages, without any fancy static site generator.
-    </p>
-  </body>
+        <!-- Clavier en HTML/CSS pour représenter les touches par joueur -->
+        <div id="keyboard">
+            <div class="row">
+                <div class="key" id="key_little2">²</div>
+                <div class="key" id="key_1">1</div>
+                <div class="key" id="key_2">2</div>
+                <div class="key" id="key_3">3</div>
+                <div class="key" id="key_4">4</div>
+                <div class="key" id="key_5">5</div>
+                <div class="key" id="key_6">6</div>
+                <div class="key" id="key_7">7</div>
+                <div class="key" id="key_8">8</div>
+                <div class="key" id="key_9">9</div>
+                <div class="key" id="key_0">0</div>
+                <div class="key" id="key_°">°</div>
+                <div class="key" id="key_+">+</div>
+                <div class="key" id="key_supr">←</div>
+            </div>
+            <div class="row">
+                <div class="key" id="key_tab">tab</div>
+                <div class="key" id="key_a">A</div>
+                <div class="key zqsd" id="key_z">Z</div>
+                <div class="key" id="key_e">E</div>
+                <div class="key" id="key_r">R</div>
+                <div class="key tfgh" id="key_t">T</div>
+                <div class="key" id="key_y">Y</div>
+                <div class="key" id="key_u">U</div>
+                <div class="key ijkl" id="key_i">I</div>
+                <div class="key" id="key_o">O</div>
+                <div class="key" id="key_p">P</div>
+                <div class="key" id="key_^">^</div>
+                <div class="key" id="key_$">$</div>
+                <div class="key" id="key_*">*</div>
+            </div>
+            <div class="row">
+                <div class="key" id="key_caps">caps</div>
+                <div class="key zqsd" id="key_q">Q</div>
+                <div class="key zqsd" id="key_s">S</div>
+                <div class="key zqsd" id="key_d">D</div>
+                <div class="key tfgh" id="key_f">F</div>
+                <div class="key tfgh" id="key_g">G</div>
+                <div class="key tfgh" id="key_h">H</div>
+                <div class="key ijkl" id="key_j">J</div>
+                <div class="key ijkl" id="key_k">K</div>
+                <div class="key ijkl" id="key_l">L</div>
+                <div class="key" id="key_m">M</div>
+                <div class="key" id="key_ù">ù</div>
+                <div class="key" id="key_enter">enter</div>
+            </div>
+            <div class="row">
+                <div class="key" id="key_lshift">shift</div>
+                <div class="key" id="key_chevron">&lt;</div>
+                <div class="key" id="key_w">W</div>
+                <div class="key" id="key_x">X</div>
+                <div class="key" id="key_c">C</div>
+                <div class="key" id="key_v">V</div>
+                <div class="key" id="key_b">B</div>
+                <div class="key" id="key_n">N</div>
+                <div class="key" id="key_comma">,</div>
+                <div class="key" id="key_semicolon">;</div>
+                <div class="key" id="key_colon">:</div>
+                <div class="key" id="key_exclamation">!</div>
+                <div class="key" id="key_rshift">shift</div>
+            </div>
+            <div class="row">
+                <div class="key" id="key_lctrl">CTRL</div>
+                <div class="key" id="key_fn">FN</div>
+                <div class="key" id="key_lalt">ALT</div>
+                <div class="key" id="key_space">space</div>
+                <div class="key" id="key_ralt">ALT</div>
+                <div class="key" id="key_rctrl">CTRL</div>
+                <div class="key p1" id="key_left">←</div>
+                <div id="upAndDown">
+                    <div class="key p1" id="key_up">↑</div>
+                    <div class="key p1" id="key_down">↓</div>
+                </div>
+                <div class="key p1" id="key_right">→</div>
+            </div>
+        </div>
+
+        <!-- Sélection du nombre d'IAs -->
+        <div class="nbAI">
+            <h2>Choose the number of AI</h2>
+            <select id="selectNbAI">
+                <option value="0b">0 AI</option>
+                <option value="1b">1 AI</option>
+                <option value="2b">2 AIs</option>
+                <option value="3b">3 AIs</option>
+                <option value="4b">4 AIs</option>
+            </select>
+        </div>
+        <br />
+
+        <!-- Bouton de lancement de la partie -->
+        <button id="start" onclick="start()">Start</button>
+    </article>
+    <!-- Canevas pour le rendu 3D -->
+    <div id="canvas"></div>
+
+</body>
 </html>
-
