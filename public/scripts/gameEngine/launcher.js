@@ -3,7 +3,8 @@ import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threej
 
 // Import des autres scripts
 import * as Score from './score.js';
-import * as WorldBuilder from './worldBuilder.js';
+import * as WorldManager from './worldManager.js';
+import * as Camera from '../3D/camera.js';
 
 // Définition des constantes
 const EMPTY = 0;
@@ -26,15 +27,44 @@ var WORLD;
 if(gameMode == "classic" || gameMode == "survival") {
     var nbRows = prompt("How many rows do you want in your level?", 20);
     var nbCols = prompt("How many columns do you want in your level?", 20);
-    var template = WorldBuilder.generateTemplate(nbRows, nbCols);
+    var template = WorldManager.generateTemplate(nbRows, nbCols);
     let difficulty = prompt("Entrer le niveau de difficulté (1-10)", "1");
-    WORLD = WorldBuilder.generateLevel(difficulty, template);
+    WORLD = WorldManager.generateLevel(difficulty, template);
 } else if(gameMode == "race"){
     var nbRows = (parseInt(nbAI) + parseInt(nbPlayers)) * 3;
     var nbCols = prompt("Wich length do you want for the race?", 100);
-    var template = WorldBuilder.generateTemplate(nbRows, nbCols);
+    var template = WorldManager.generateTemplate(nbRows, nbCols);
     let difficulty = prompt("Entrer le niveau de difficulté (1-10)", "1");
-    WORLD = WorldBuilder.generateLevel(difficulty, template);
+    WORLD = WorldManager.generateLevel(difficulty, template);
 }
 
-console.log(WORLD);
+var listOfWalls = [];
+var listOfEmpties = [];
+WorldManager.fillLists(listOfWalls, listOfEmpties, WORLD);
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+Camera.centerCameraOnMap(WORLD, camera);
+
+// Création du renderer
+const renderer = new THREE.WebGLRenderer( { antialias: true } );
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setClearColor(0xffffff, 1);
+document.body.appendChild( renderer.domElement );
+var render = function () {
+    requestAnimationFrame( render );
+    renderer.render(scene, camera);
+    };
+render();
+
+// Construction du monde en 3D
+WorldManager.buildWorld(WORLD, scene);
+WorldManager.buildFloor(WORLD, scene);
+
+// Ajout d'une lumière
+var light = new THREE.PointLight(0xffffff, 1, 100);
+light.position.set(WORLD[0].length / 2, WORLD.length / 2, 20);
+light.intensity = 1.5;
+scene.add(light);
