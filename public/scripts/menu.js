@@ -68,7 +68,7 @@ function start() {
     document.body.style.overflow = 'hidden';
 
     // On appelle le script qui fait tourner le jeu
-    script.src = 'scripts/gameEngine.js';
+    script.src = 'scripts/gameEngine/launcher.js';
     script.type = 'module';
     head.appendChild(script);
 
