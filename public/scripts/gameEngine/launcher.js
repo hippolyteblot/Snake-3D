@@ -5,10 +5,15 @@ import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threej
 import * as Score from './score.js';
 import * as WorldManager from './worldManager.js';
 import * as Camera from '../3D/camera.js';
+import * as Snake from '../entities/snake.js';
+import * as Controls from '../entities/controls.js';
 
 // Définition des constantes
 const EMPTY = 0;
 const WALL = 1;
+
+const SNAKECOLOR1 = 0x3620fa;
+const SNAKECOLOR2 = 0x9d2eff;
 
 
 var gameMode = document.getElementById("selectGameMode").value;
@@ -68,3 +73,6 @@ var light = new THREE.PointLight(0xffffff, 1, 100);
 light.position.set(WORLD[0].length / 2, WORLD.length / 2, 20);
 light.intensity = 1.5;
 scene.add(light);
+
+// x, y, controls, color1, color2, isABot, id
+var snake = new Snake.Snake(1, 1, new Controls.Controls("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"), SNAKECOLOR1, SNAKECOLOR2, false, 0, scene);
