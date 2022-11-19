@@ -15,3 +15,10 @@ export function buildScore(nb) {
 
     document.body.appendChild(score);
 }
+
+export function updateScore(snake) {
+    var nb = snake.id;
+    var score = document.getElementById("blockScore" + nb);
+    var span = score.getElementsByTagName("span")[0];
+    span.innerHTML = snake.score;
+}

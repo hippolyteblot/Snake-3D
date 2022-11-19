@@ -1,6 +1,9 @@
 // Import de la classe Cell
 import { Cell } from './cell.js';
 
+import * as WorldManager from '../gameEngine/worldManager.js';
+import * as Score from '../gameEngine/score.js';
+
 export class Snake {
     constructor(x, y, controls, color1, color2, isABot, id, scene) {
         this.id = id;
@@ -20,15 +23,15 @@ export class Snake {
 
         this.isABot = isABot;
         this.isGhost = false;
+        this.snakeDead = false;
 
         this.addControls(controls.up, controls.down, controls.left, controls.right);
     }
 
-    move() {
-        oldDirection = this.direction;
+    move(scene) {
         for (var i = this.body.length - 1; i > 0; i--) {
 
-            // Set the moving direction while using the position of the next block
+            // On déplace la cellule à la position de la cellule précédente
             if(this.body[i].x > this.body[i - 1].x) {
                 this.body[i].movingDirection = "left";
             }
@@ -49,7 +52,7 @@ export class Snake {
         }
 
         if(this.thinkToGrow) {
-            this.body.push(new Cell(this.body[0].x, this.body[0].y, this.body.length, this.color1, this.color2, this.isGhost, scene));
+            this.body.push(new Cell(this.body[0].x, this.body[0].y, this.body.length, this.color1, this.color2, scene));
             this.thinkToGrow = false;
         }
 
@@ -83,7 +86,7 @@ export class Snake {
         this.thinkToGrow = true;
     }
 
-    movingAnimation() {
+    movingAnimation(time) {
         
         var ratio = (time - this.lastTime) / this.delay;
 
@@ -103,45 +106,44 @@ export class Snake {
         }
     }
 
-    checkCollision() {
+    checkCollision(gameMode, snakeList, listOfWalls, apple, listOfEmpties, scene) {
 
-        if (gameMode != "survival" && this.body[0].x === apple.position.x && this.body[0].y === apple.position.y) {
+        if (gameMode != "survival" && this.body[0].x == apple.block.position.x && this.body[0].y === apple.block.position.y) {
             this.score++;
-            if(!this.isABot)
-                updateScore(this);
-            randomApplePosition();
             this.grow();
+            apple.updatePosition(WorldManager.randomFreePosition(listOfEmpties));
             this.delay -= 10;
+            Score.updateScore(this);
 
         }
         for(var i = 0; i < snakeList.length; i++) {
             for(var j = 0; j < snakeList[i].body.length; j++) {
                 if(this.body[0] != snakeList[i].body[j] && this.body[0].x === snakeList[i].body[j].x && this.body[0].y === snakeList[i].body[j].y &&snakeList[i].isGhost == false) {
-                    this.kill();
+                    this.kill(snakeList, scene);
                     return;
                 }
             }
         }
         for (var i = 1; i < this.body.length; i++) {
             if (this.body[0].x === this.body[i].x && this.body[0].y === this.body[i].y) {
-                this.kill();
+                this.kill(snakeList, scene);
                 return;
             }
         }
         for (var i = 0; i < listOfWalls.length; i++) {
             if (this.body[0].x === listOfWalls[i][0] && this.body[0].y === listOfWalls[i][1]) {
-                this.kill();
+                this.kill(snakeList, scene);
                 return;
             }
         }
         
     }
 
-    kill() {
-        snakeDead = true;
-        // Get the index of the snake
+    kill(snakeList, scene) {
+        this.snakeDead = true;
+        // On récupère l'index de la liste de serpents
         var index = snakeList.indexOf(this);
-        // Delete the snake
+        // Suppression du serpent
         for(var k = snakeList[index].body.length - 1; k >= 0; k--) {
             scene.remove(snakeList[index].body[k].block);
         }

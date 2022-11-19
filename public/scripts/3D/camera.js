@@ -11,3 +11,11 @@ export function centerCameraOnMap(WORLD, camera) {
     camera.position.y = center[1];
     camera.position.z = higher * 0.75;
 }
+
+// Centre la caméra sur le joueur du serpent passé en paramètre
+export function centerCameraOnPlayer(snake, camera) {
+    var center = snake.body[0].block.position;
+    camera.position.x = center.x;
+    camera.position.y = center.y;
+    camera.position.z = 10;
+}

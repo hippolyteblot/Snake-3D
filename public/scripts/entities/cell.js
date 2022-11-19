@@ -1,4 +1,4 @@
-// Import de Three.js (depuis un CDN pour allegé le projet)
+// Import de Three.js (depuis un CDN pour alléger le projet)
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
 
 export class Cell {

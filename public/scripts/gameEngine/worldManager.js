@@ -1,4 +1,4 @@
-// Import de Three.js (depuis un CDN pour allegé le projet)
+// Import de Three.js (depuis un CDN pour alléger le projet)
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
 
 
@@ -44,9 +44,9 @@ export function fillLists(listOfWalls, listOfEmpties, level) {
     for (var i = 0; i < level.length; i++) {
         for (var j = 0; j < level[i].length; j++) {
             if (level[i][j] === WALL) {
-                listOfWalls.push([i, j]);
+                listOfWalls.push([j, i]);
             } else {
-                listOfEmpties.push([i, j]);
+                listOfEmpties.push([j, i]);
             }
         }
     }
