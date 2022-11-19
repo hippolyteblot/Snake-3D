@@ -57,6 +57,35 @@ export function randomFreePosition(listOfEmpties) {
     return listOfEmpties[index];
 }
 
+export function randomFreePositionBetween(listOfEmpties, min, max) {
+    
+    var highestX = 0;
+    for (var i = 0; i < listOfEmpties.length; i++) {
+        if (listOfEmpties[i][0] > highestX) {
+            highestX = listOfEmpties[i][0];
+        }
+    }
+    if (highestX < min) {
+        return null;
+    }
+
+    var index = Math.floor(Math.random() * listOfEmpties.length);
+    while (listOfEmpties[index][0] < min || listOfEmpties[index][0] > max) {
+        index = Math.floor(Math.random() * listOfEmpties.length);
+    }
+    return listOfEmpties[index];
+}
+
+export function getHighestSnake(snakeList) {
+    var highestSnake = snakeList[0];
+    for (var i = 1; i < snakeList.length; i++) {
+        if (snakeList[i].body[0].block.position.x > highestSnake.body[0].block.position.x) {
+            highestSnake = snakeList[i];
+        }
+    }
+    return highestSnake;
+}
+
 export function buildWorld(WORLD, scene) {
     for (var i = 0; i < WORLD.length; i++) {
         for (var j = 0; j < WORLD[i].length; j++) {

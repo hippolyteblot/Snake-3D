@@ -126,7 +126,12 @@ for(var i = 0; i < nbAI; i++) {
 
 var lastSpawn = new Date().getTime();
 var time = 0;
-var apple = new Apple.Apple(WorldManager.randomFreePosition(listOfEmpties), scene);
+var apple;
+if(gameMode == "classic" || gameMode == "survival") {
+    apple = new Apple.Apple(WorldManager.randomFreePosition(listOfEmpties), scene);
+} else if(gameMode == "race") {
+    apple = new Apple.Apple(WorldManager.randomFreePositionBetween(listOfEmpties, 3, 10), scene);
+}
 
 var snakeDead = false;
 
@@ -143,7 +148,7 @@ var loop = function () {
     }
     
     if(gameMode == "race") {
-        Camera.centerCameraOnHighestSnake();
+        Camera.centerCameraOnHighestSnake(snakeList, camera, light);
     } else {
         if(snakeList.length > 1) {
             Camera.centerCameraOnMap();

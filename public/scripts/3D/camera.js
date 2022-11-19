@@ -1,3 +1,6 @@
+
+import * as WorldManager from '../gameEngine/worldManager.js';
+
 // Centre la caméra sur le monde
 export function centerCameraOnMap(WORLD, camera) {
     var width = WORLD[0].length;
@@ -18,4 +21,14 @@ export function centerCameraOnPlayer(snake, camera) {
     camera.position.x = center.x;
     camera.position.y = center.y;
     camera.position.z = 10;
+}
+// Centre la caméra sur le joueur le plus avancé
+export function centerCameraOnHighestSnake(snakeList, camera, light) {
+    
+    var highestSnake = WorldManager.getHighestSnake(snakeList);
+
+    light.position.x = highestSnake.body[0].x;
+    light.position.y = highestSnake.body[0].y;
+
+    centerCameraOnPlayer(highestSnake, camera);
 }

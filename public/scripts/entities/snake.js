@@ -111,8 +111,15 @@ export class Snake {
         if (gameMode != "survival" && this.body[0].x == apple.block.position.x && this.body[0].y === apple.block.position.y) {
             this.score++;
             this.grow();
-            apple.updatePosition(WorldManager.randomFreePosition(listOfEmpties));
-            this.delay -= 10;
+            if(gameMode != "race")
+                apple.updatePosition(WorldManager.randomFreePosition(listOfEmpties));
+            else {
+                var highestSnakeX = WorldManager.getHighestSnake(snakeList).body[0].x;
+                var position = WorldManager.randomFreePositionBetween(listOfEmpties, highestSnakeX + 3, highestSnakeX + 10)
+                apple.updatePosition(position);
+            }
+                
+            this.delay -= 10/this.body.length*0.2;
             Score.updateScore(this);
 
         }
