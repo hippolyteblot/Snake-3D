@@ -76,8 +76,8 @@ export function randomFreePositionBetween(listOfEmpties, snakeList, min, max) {
     
     var highestX = 0;
     for (var i = 0; i < listOfEmpties.length; i++) {
-        if (listOfEmpties[i][0] > highestX) {
-            highestX = listOfEmpties[i][0];
+        if (listOfEmpties[i].x > highestX) {
+            highestX = listOfEmpties[i].x;
         }
     }
     if (highestX < min) {
@@ -86,7 +86,7 @@ export function randomFreePositionBetween(listOfEmpties, snakeList, min, max) {
 
     var freeArray = [];
     for (var i = 0; i < listOfEmpties.length; i++) {
-        if (listOfEmpties[i][0] >= min && listOfEmpties[i][0] <= max) {
+        if (listOfEmpties[i].x >= min && listOfEmpties[i].x <= max) {
             freeArray.push(listOfEmpties[i]);
         }
     }

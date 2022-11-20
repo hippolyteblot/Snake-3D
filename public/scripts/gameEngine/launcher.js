@@ -8,6 +8,7 @@ import * as Camera from '../3D/camera.js';
 import * as Snake from '../entities/snake.js';
 import * as Controls from '../entities/controls.js';
 import * as Apple from '../entities/apple.js';
+import * as Case from '../entities/case.js';
 
 // Définition des constantes
 const EMPTY = 0;
@@ -96,7 +97,7 @@ light.position.set(WORLD[0].length / 2, WORLD.length / 2, 20);
 light.intensity = 1.5;
 scene.add(light);
 
-
+// Création des différets controls
 var controlsSnake1 = new Controls.Controls("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight");
 var controlsSnake2 = new Controls.Controls("z", "s", "q", "d");
 var controlsSnake3 = new Controls.Controls("i", "k", "j", "l");
@@ -104,13 +105,13 @@ var controlsSnake4 = new Controls.Controls("t", "g", "f", "h");
 var controlsSnakeAI = new Controls.Controls(null, null, null, null);
 var controlsSnake = [controlsSnake1, controlsSnake2, controlsSnake3, controlsSnake4];
 
-
+// Générations et placement des serpents en fonction du nombre de joueurs et du mode de jeu
 var snakeList = [];
 for(var i = 0; i < nbPlayers; i++) {
     if(gameMode != "race") {
         var freeCase = listOfEmpties[Math.floor(Math.random() * listOfEmpties.length)];
     } else {
-        var freeCase = [1, i*2+1];
+        var freeCase = new Case.Case(1, i * 2 + 1);
     }
     snakeList.push(new Snake.Snake(freeCase, controlsSnake[i], snakeColor[i][0], snakeColor[i][1], false, i+1, scene));
 }
@@ -118,16 +119,16 @@ for(var i = 0; i < nbAI; i++) {
     if(gameMode != "race") {
         var freeCase = listOfEmpties[Math.floor(Math.random() * listOfEmpties.length)];
     } else {
-        var freeCase = [1, i*2+1 + 2*nbPlayers];
+        var freeCase = new Case.Case(1, i * 2 + 1);
     }
-    snakeList.push(new Snake.Snake(freeCase[0], freeCase[1], controlsSnakeAI, SNAKECOLORIA1, SNAKECOLORIA2, true, null, scene));
+    snakeList.push(new Snake.Snake(freeCase, controlsSnakeAI, SNAKECOLORIA1, SNAKECOLORIA2, true, null, scene));
 }
 
 
 var lastSpawn = new Date().getTime();
 var time = 0;
 var apple;
-if(gameMode == "classic" || gameMode == "survival") {
+if(gameMode == "classic") {
     apple = new Apple.Apple(WorldManager.randomFreePosition(listOfEmpties, snakeList), scene);
 } else if(gameMode == "race") {
     apple = new Apple.Apple(WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, 3, 10), scene);
@@ -135,7 +136,15 @@ if(gameMode == "classic" || gameMode == "survival") {
 
 var snakeDead = false;
 
+// Boucle principale
 var loop = function () {
+
+    // Si tous les serpents sont morts, on arrête la boucle
+    if(snakeList.length == 0) {
+        alert("Game Over");
+        // On recharge la page
+        location.reload();
+    }
 
     if(gameMode == "survival") {
         // On fait grossir le serpent toutes les 5 secondes
@@ -164,7 +173,7 @@ var loop = function () {
             snakeList[i].move(scene);
             snakeList[i].lastTime = time;
             
-            snakeList[i].checkCollision(gameMode, snakeList, listOfWalls, apple, listOfEmpties, scene);
+            snakeDead = snakeList[i].checkCollision(gameMode, snakeList, listOfWalls, apple, listOfEmpties, scene, snakeDead);
         
             if (snakeDead) {
                 snakeDead = false;
@@ -180,7 +189,7 @@ var loop = function () {
 Camera.centerCameraOnMap(WORLD, camera);
 // La prtie commence quand on appuie sur "entrer"
 document.addEventListener('keydown', function (event) {
-    if (event.keyCode == 13) {
+    if (event.key == "Enter") {
         loop();
     }
 });

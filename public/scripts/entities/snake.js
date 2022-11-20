@@ -127,28 +127,26 @@ export class Snake {
         for(var i = 0; i < snakeList.length; i++) {
             for(var j = 0; j < snakeList[i].body.length; j++) {
                 if(this.body[0] != snakeList[i].body[j] && this.body[0].x === snakeList[i].body[j].x && this.body[0].y === snakeList[i].body[j].y &&snakeList[i].isGhost == false) {
-                    this.kill(snakeList, scene);
-                    return;
+                    return this.kill(snakeList, scene);
+                    
                 }
             }
         }
         for (var i = 1; i < this.body.length; i++) {
             if (this.body[0].x === this.body[i].x && this.body[0].y === this.body[i].y) {
-                this.kill(snakeList, scene);
-                return;
+                return this.kill(snakeList, scene);
+                
             }
         }
         for (var i = 0; i < listOfWalls.length; i++) {
             if (this.body[0].x === listOfWalls[i].x && this.body[0].y === listOfWalls[i].y) {
-                this.kill(snakeList, scene);
-                return;
+                return this.kill(snakeList, scene);
             }
         }
         
     }
 
     kill(snakeList, scene) {
-        this.snakeDead = true;
         // On récupère l'index de la liste de serpents
         var index = snakeList.indexOf(this);
         // Suppression du serpent
@@ -156,6 +154,7 @@ export class Snake {
             scene.remove(snakeList[index].body[k].block);
         }
         snakeList.splice(index, 1);
+        return true;
     }
 
 
