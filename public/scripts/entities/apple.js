@@ -9,8 +9,8 @@ export class Apple {
             new THREE.BoxGeometry(1, 1, 1),
             new THREE.MeshBasicMaterial({ color: 0xff0000 })
         );
-        this.block.position.x = position[0];
-        this.block.position.y = position[1];
+        this.block.position.x = position.x;
+        this.block.position.y = position.y;
         this.scene.add(this.block);
     }
 
@@ -18,8 +18,8 @@ export class Apple {
         this.scene.remove(this.block);
     }
 
-    updatePosition(position) {
-        this.block.position.x = position[0];
-        this.block.position.y = position[1];
+    updatePosition(newCase) {
+        this.block.position.x = newCase.x;
+        this.block.position.y = newCase.y;
     }
 }

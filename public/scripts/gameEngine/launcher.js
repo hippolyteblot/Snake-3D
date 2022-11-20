@@ -112,7 +112,7 @@ for(var i = 0; i < nbPlayers; i++) {
     } else {
         var freeCase = [1, i*2+1];
     }
-    snakeList.push(new Snake.Snake(freeCase[0], freeCase[1], controlsSnake[i], snakeColor[i][0], snakeColor[i][1], false, i+1, scene));
+    snakeList.push(new Snake.Snake(freeCase, controlsSnake[i], snakeColor[i][0], snakeColor[i][1], false, i+1, scene));
 }
 for(var i = 0; i < nbAI; i++) {
     if(gameMode != "race") {
@@ -128,9 +128,9 @@ var lastSpawn = new Date().getTime();
 var time = 0;
 var apple;
 if(gameMode == "classic" || gameMode == "survival") {
-    apple = new Apple.Apple(WorldManager.randomFreePosition(listOfEmpties), scene);
+    apple = new Apple.Apple(WorldManager.randomFreePosition(listOfEmpties, snakeList), scene);
 } else if(gameMode == "race") {
-    apple = new Apple.Apple(WorldManager.randomFreePositionBetween(listOfEmpties, 3, 10), scene);
+    apple = new Apple.Apple(WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, 3, 10), scene);
 }
 
 var snakeDead = false;

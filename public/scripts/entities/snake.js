@@ -5,12 +5,12 @@ import * as WorldManager from '../gameEngine/worldManager.js';
 import * as Score from '../gameEngine/score.js';
 
 export class Snake {
-    constructor(x, y, controls, color1, color2, isABot, id, scene) {
+    constructor(newCase, controls, color1, color2, isABot, id, scene) {
         this.id = id;
         this.scene = scene;
         this.score = 0;
         this.body = [];
-        this.body[0] = new Cell(x, y, 0, color1, color2, this.scene);
+        this.body[0] = new Cell(newCase.x, newCase.y, 0, color1, color2, this.scene);
         this.direction = "right";
         this.actualDirection = "right";
         this.thinkToGrow = false;
@@ -112,14 +112,15 @@ export class Snake {
             this.score++;
             this.grow();
             if(gameMode != "race")
-                apple.updatePosition(WorldManager.randomFreePosition(listOfEmpties));
+                apple.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
             else {
                 var highestSnakeX = WorldManager.getHighestSnake(snakeList).body[0].x;
-                var position = WorldManager.randomFreePositionBetween(listOfEmpties, highestSnakeX + 3, highestSnakeX + 10)
+                var position = WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, highestSnakeX + 3, highestSnakeX + 10)
                 apple.updatePosition(position);
             }
                 
-            this.delay -= 10/this.body.length*0.2;
+            this.delay -= 10/(this.body.length*0.5);
+            console.log(this.delay);
             Score.updateScore(this);
 
         }
@@ -138,7 +139,7 @@ export class Snake {
             }
         }
         for (var i = 0; i < listOfWalls.length; i++) {
-            if (this.body[0].x === listOfWalls[i][0] && this.body[0].y === listOfWalls[i][1]) {
+            if (this.body[0].x === listOfWalls[i].x && this.body[0].y === listOfWalls[i].y) {
                 this.kill(snakeList, scene);
                 return;
             }

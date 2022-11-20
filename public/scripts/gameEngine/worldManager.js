@@ -1,6 +1,8 @@
 // Import de Three.js (depuis un CDN pour alléger le projet)
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
 
+import * as Case from '../entities/case.js';
+
 
 // Définition des constantes
 const EMPTY = 0;
@@ -44,20 +46,33 @@ export function fillLists(listOfWalls, listOfEmpties, level) {
     for (var i = 0; i < level.length; i++) {
         for (var j = 0; j < level[i].length; j++) {
             if (level[i][j] === WALL) {
-                listOfWalls.push([j, i]);
+                listOfWalls.push(new Case.Case(j, i));
             } else {
-                listOfEmpties.push([j, i]);
+                listOfEmpties.push(new Case.Case(j, i));
             }
         }
     }
 }
 
-export function randomFreePosition(listOfEmpties) {
-    var index = Math.floor(Math.random() * listOfEmpties.length);
-    return listOfEmpties[index];
+export function randomFreePosition(listOfEmpties, snakeList) {
+    // Copy the list of empties
+    var freeArray = listOfEmpties.slice();
+
+    for (var i = 0; i < snakeList.length; i++) {
+        for (var j = 0; j < snakeList[i].body.length; j++) {
+            for (var k = 0; k < freeArray.length; k++) {
+                if (snakeList[i].body[j].x === freeArray[k].x && snakeList[i].body[j].y === freeArray[k].y) {
+                    freeArray.splice(k, 1);
+                }
+            }    
+        }
+    }
+
+    var randomIndex = Math.floor(Math.random() * freeArray.length);
+    return freeArray[randomIndex];
 }
 
-export function randomFreePositionBetween(listOfEmpties, min, max) {
+export function randomFreePositionBetween(listOfEmpties, snakeList, min, max) {
     
     var highestX = 0;
     for (var i = 0; i < listOfEmpties.length; i++) {
@@ -69,11 +84,29 @@ export function randomFreePositionBetween(listOfEmpties, min, max) {
         return null;
     }
 
-    var index = Math.floor(Math.random() * listOfEmpties.length);
-    while (listOfEmpties[index][0] < min || listOfEmpties[index][0] > max) {
-        index = Math.floor(Math.random() * listOfEmpties.length);
+    var freeArray = [];
+    for (var i = 0; i < listOfEmpties.length; i++) {
+        if (listOfEmpties[i][0] >= min && listOfEmpties[i][0] <= max) {
+            freeArray.push(listOfEmpties[i]);
+        }
     }
-    return listOfEmpties[index];
+
+    for (var i = 0; i < snakeList.length; i++) {
+        for (var j = 0; j < snakeList[i].body.length; j++) {
+            for (var k = 0; k < freeArray.length; k++) {
+                if (snakeList[i].body[j].x === freeArray[k].x && snakeList[i].body[j].y === freeArray[k].y) {
+                    freeArray.splice(k, 1);
+                }
+            }    
+        }
+    }
+
+    if (freeArray.length === 0) {
+        return null;
+    }
+
+    var index = Math.floor(Math.random() * freeArray.length);
+    return freeArray[index];
 }
 
 export function getHighestSnake(snakeList) {
