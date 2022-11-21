@@ -35,7 +35,6 @@ selectNbPlayer.addEventListener('change', function() {
     
     /* On retire le dernier caractère de la valeur du selectNbPlayer pour avoir le nombre de joueurs */
     var nbPlayer = this.value.substring(0, this.value.length - 1);
-    console.log(nbPlayer);
     if(nbPlayer >= 2) {
         addClassToElements(document.getElementsByClassName('zqsd'), 'active');
     } else {

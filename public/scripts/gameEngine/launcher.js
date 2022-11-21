@@ -1,6 +1,5 @@
 // Import de Three.js (depuis un CDN pour alléger le projet)
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
-
 // Import des autres scripts
 import * as Score from './score.js';
 import * as WorldManager from './worldManager.js';
@@ -9,6 +8,7 @@ import * as Snake from '../entities/snake.js';
 import * as Controls from '../entities/controls.js';
 import * as Apple from '../entities/apple.js';
 import * as Case from '../entities/case.js';
+import * as IA from './ia.js';
 
 // Définition des constantes
 const EMPTY = 0;
@@ -160,7 +160,7 @@ var loop = function () {
         Camera.centerCameraOnHighestSnake(snakeList, camera, light);
     } else {
         if(snakeList.length > 1) {
-            Camera.centerCameraOnMap();
+            Camera.centerCameraOnMap(WORLD, camera);
         } else {
             Camera.centerCameraOnPlayer(snakeList[0], camera);
         }
@@ -170,6 +170,11 @@ var loop = function () {
         time = new Date().getTime();
         if (time > snakeList[i].lastTime + snakeList[i].delay) {
             snakeList[i].lastTime = time;
+
+            if(!snakeList[i].isABot) {
+                snakeList[i].direction = IA.pathfinding(snakeList[i], apple, snakeList, listOfWalls);
+            }
+
             snakeList[i].move(scene);
             snakeList[i].lastTime = time;
             
@@ -187,7 +192,7 @@ var loop = function () {
 }
 // On centre la caméra sur la carte pour que chaque joueur puisse voir son serpent et choisir sa direction
 Camera.centerCameraOnMap(WORLD, camera);
-// La prtie commence quand on appuie sur "entrer"
+// La partie commence quand on appuie sur "entrer"
 document.addEventListener('keydown', function (event) {
     if (event.key == "Enter") {
         loop();

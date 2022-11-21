@@ -162,3 +162,20 @@ export function buildFloor(WORLD, scene) {
         }
     }
 }
+
+export function isEmpty(x, y, snakeList, listOfWalls) {
+    for (var i = 0; i < snakeList.length; i++) {
+        for (var j = 0; j < snakeList[i].body.length; j++) { // -1 car la queue du snake aura avancé
+            if (snakeList[i].body[j].x == x && snakeList[i].body[j].y == y) {
+                console.log("Snake " + i + " is on " + x + " " + y);
+                return false;
+            }
+        }
+    }
+    for (var i = 0; i < listOfWalls.length; i++) {
+        if (listOfWalls[i].x == x && listOfWalls[i].y == y) {
+            return false;
+        }
+    }
+    return true;
+}

@@ -119,8 +119,7 @@ export class Snake {
                 apple.updatePosition(position);
             }
                 
-            this.delay -= 10/(this.body.length*0.5);
-            console.log(this.delay);
+            this.delay -= 10;
             Score.updateScore(this);
 
         }
