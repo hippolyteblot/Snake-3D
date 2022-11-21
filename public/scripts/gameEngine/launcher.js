@@ -171,7 +171,7 @@ var loop = function () {
         if (time > snakeList[i].lastTime + snakeList[i].delay) {
             snakeList[i].lastTime = time;
 
-            if(!snakeList[i].isABot) {
+            if(snakeList[i].isABot) {
                 snakeList[i].direction = IA.pathfinding(snakeList[i], apple, snakeList, listOfWalls);
             }
 

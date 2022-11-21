@@ -108,7 +108,7 @@ export class Snake {
 
     checkCollision(gameMode, snakeList, listOfWalls, apple, listOfEmpties, scene) {
 
-        if (gameMode != "survival" && this.body[0].x == apple.block.position.x && this.body[0].y === apple.block.position.y) {
+        if (gameMode != "survival" && apple.block != undefined && this.body[0].x == apple.block.position.x && this.body[0].y === apple.block.position.y) {
             this.score++;
             this.grow();
             if(gameMode != "race")
@@ -120,7 +120,8 @@ export class Snake {
             }
                 
             this.delay -= 10;
-            Score.updateScore(this);
+            if(!this.isABot)
+                Score.updateScore(this);
 
         }
         for(var i = 0; i < snakeList.length; i++) {
