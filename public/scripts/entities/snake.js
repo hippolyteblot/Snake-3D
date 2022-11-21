@@ -106,7 +106,7 @@ export class Snake {
         }
     }
 
-    checkCollision(gameMode, snakeList, listOfWalls, apple, listOfEmpties, scene) {
+    checkCollision(gameMode, snakeList, listOfWalls, apple, calming, listOfEmpties, scene) {
 
         if (gameMode != "survival" && apple.block != undefined && this.body[0].x == apple.block.position.x && this.body[0].y === apple.block.position.y) {
             this.score++;
@@ -124,6 +124,11 @@ export class Snake {
                 Score.updateScore(this);
 
         }
+        if (gameMode != "survival" && calming.block != undefined && this.body[0].x == calming.block.position.x && this.body[0].y === calming.block.position.y) {
+            calming.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
+            this.delay += 30;
+        }
+
         for(var i = 0; i < snakeList.length; i++) {
             for(var j = 0; j < snakeList[i].body.length; j++) {
                 if(this.body[0] != snakeList[i].body[j] && this.body[0].x === snakeList[i].body[j].x && this.body[0].y === snakeList[i].body[j].y &&snakeList[i].isGhost == false) {

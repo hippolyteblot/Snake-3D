@@ -1,15 +1,15 @@
 import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/loaders/GLTFLoader.js';
 
 
-export class Apple {
+export class Calming {
     constructor(position, scene) {
         this.scene = scene;
 
         const loader = new GLTFLoader();
-        loader.load('assets/models/apple.glb', (gltf) => {
+        loader.load('assets/models/calming.glb', (gltf) => {
             const root = gltf.scene;
-            root.position.set(position.x, position.y, position.z);
-            root.scale.set(0.6, 0.6, 0.6);
+            root.position.set(position.x, position.y, -1);
+            root.scale.set(0.15, 0.15, 0.15);
             root.rotation.x = Math.PI / 2;
             scene.add(root);
             this.block = root;
