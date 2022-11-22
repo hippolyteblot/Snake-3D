@@ -8,8 +8,8 @@ import * as Case from '../entities/case.js';
 const EMPTY = 0;
 const WALL = 1;
 
-const FLOOR1 = 0x47de2c;
-const FLOOR2 = 0x3bbd24;
+const FLOOR1 = 0xbaa34e;
+const FLOOR2 = 0xbf8a3b;
 
 // Génère un monde de nbRows lignes et nbCols colonnes entouré de murs
 export function generateTemplate(nbRows, nbCols) {

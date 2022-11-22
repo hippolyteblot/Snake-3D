@@ -10,6 +10,7 @@ import * as Apple from '../entities/apple.js';
 import * as Calming from '../entities/calming.js';
 import * as Potion from '../entities/potion.js';
 import * as Case from '../entities/case.js';
+import * as Environnement from '../entities/envrionnement.js';
 import * as IA from './ia.js';
 
 // Définition des constantes
@@ -55,16 +56,15 @@ for (var i = 0; i < nbPlayers; i++) {
 // Création du monde
 var WORLD;
 if(gameMode == "classic" || gameMode == "survival") {
-    var nbRows = prompt("How many rows do you want in your level?", 20);
-    var nbCols = prompt("How many columns do you want in your level?", 20);
-    var template = WorldManager.generateTemplate(nbRows, nbCols);
-    let difficulty = prompt("Entrer le niveau de difficulté (1-10)", "1");
+    var size = prompt("Wich size do you want for the map ?", "20");
+    var template = WorldManager.generateTemplate(size, size);
+    let difficulty = prompt("Wich difficulty do you want ? (0 to 10)", "0");
     WORLD = WorldManager.generateLevel(difficulty, template);
 } else if(gameMode == "race"){
     var nbRows = (parseInt(nbAI) + parseInt(nbPlayers)) * 3;
     var nbCols = prompt("Wich length do you want for the race?", 100);
     var template = WorldManager.generateTemplate(nbRows, nbCols);
-    let difficulty = prompt("Entrer le niveau de difficulté (1-10)", "1");
+    let difficulty = prompt("Wich difficulty do you want ? (0 to 10)", "0");
     WORLD = WorldManager.generateLevel(difficulty, template);
 }
 
@@ -94,9 +94,16 @@ WorldManager.buildWorld(WORLD, scene);
 WorldManager.buildFloor(WORLD, scene);
 
 // Ajout d'une lumière
-var light = new THREE.PointLight(0xffffff, 1, 100);
+var light = new THREE.PointLight( 0xffffff, 1, 100 );
 light.position.set(WORLD[0].length / 2, WORLD.length / 2, 20);
-light.intensity = 1.5;
+light.intensity = 1.2;
+// Ajout d'un ombre
+light.castShadow = true;
+light.shadow.mapSize.width = 1024;
+light.shadow.mapSize.height = 1024;
+light.shadow.camera.near = 0.5;
+light.shadow.camera.far = 500;
+
 scene.add(light);
 
 // Création des différets controls
@@ -145,6 +152,24 @@ if(gameMode == "classic") {
 
 var snakeDead = false;
 
+var factor = WORLD.length/20;
+var environnement = new Environnement.Environnement(new Case.Case(-10*factor, -10*factor), factor, 0, scene);
+var environnement = new Environnement.Environnement(new Case.Case(-10*factor, 10*factor), factor, 0, scene);
+var environnement = new Environnement.Environnement(new Case.Case(-10*factor, 30*factor), factor, 0, scene);
+
+var environnement = new Environnement.Environnement(new Case.Case(30*factor, -10*factor), factor, 0, scene);
+var environnement = new Environnement.Environnement(new Case.Case(30*factor, 10*factor), factor, 0, scene);
+var environnement = new Environnement.Environnement(new Case.Case(30*factor, 30*factor), factor, 0, scene);
+
+var environnement = new Environnement.Environnement(new Case.Case(10*factor, 30*factor), factor, Math.PI/2, scene);
+var environnement = new Environnement.Environnement(new Case.Case(10*factor, -10*factor), factor, -Math.PI/2, scene);
+
+
+var loader = document.getElementById("loader");
+loader.classList.add("disepear");
+setTimeout(function() {
+    loader.style.display = "none";
+}, 1500);
 // Boucle principale
 var loop = function () {
 

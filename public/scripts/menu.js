@@ -71,6 +71,12 @@ function start() {
     script.type = 'module';
     head.appendChild(script);
 
+    // On récupère le loader
+    var loader = document.getElementById('loader');
+    // On l'affiche pendant le chargement du jeu
+    loader.style.display = 'flex';
+
+
 }
 
 // Quand le boutton #start est cliqué, on lance la fonction start()
