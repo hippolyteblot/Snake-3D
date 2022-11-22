@@ -10,7 +10,7 @@ export class Snake {
         this.scene = scene;
         this.score = 0;
         this.body = [];
-        this.body[0] = new Cell(newCase.x, newCase.y, 0, color1, color2, this.scene);
+        this.body[0] = new Cell(newCase.x, newCase.y, 0, color1, color2, this.scene, false);
         this.direction = "right";
         this.actualDirection = "right";
         this.thinkToGrow = false;
@@ -52,7 +52,7 @@ export class Snake {
         }
 
         if(this.thinkToGrow) {
-            this.body.push(new Cell(this.body[0].x, this.body[0].y, this.body.length, this.color1, this.color2, scene));
+            this.body.push(new Cell(this.body[0].x, this.body[0].y, this.body.length, this.color1, this.color2, scene, this.isGhost));
             this.thinkToGrow = false;
         }
 
@@ -106,7 +106,7 @@ export class Snake {
         }
     }
 
-    checkCollision(gameMode, snakeList, listOfWalls, apple, calming, listOfEmpties, scene) {
+    checkCollision(gameMode, snakeList, listOfWalls, apple, calming, potion, listOfEmpties, scene) {
 
         if (gameMode != "survival" && apple.block != undefined && this.body[0].x == apple.block.position.x && this.body[0].y === apple.block.position.y) {
             this.score++;
@@ -122,29 +122,40 @@ export class Snake {
             this.delay -= 10;
             if(!this.isABot)
                 Score.updateScore(this);
+            
+            // Une chance sur 5 de faire apparaitre un "calming"
+            if(calming.block.position.x == -100 && Math.floor(Math.random() * 5) == 0) {
+                calming.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
+            }
 
         }
         if (gameMode != "survival" && calming.block != undefined && this.body[0].x == calming.block.position.x && this.body[0].y === calming.block.position.y) {
-            calming.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
+            calming.block.position.x = -100;
+            calming.block.position.y = -100;
             this.delay += 30;
+        }
+        if (gameMode != "survival" && potion.block != undefined && this.body[0].x == potion.block.position.x && this.body[0].y === potion.block.position.y) {
+            this.ghostMode();
+            potion.block.position.x = -100;
+            potion.block.position.y = -100;
         }
 
         for(var i = 0; i < snakeList.length; i++) {
             for(var j = 0; j < snakeList[i].body.length; j++) {
-                if(this.body[0] != snakeList[i].body[j] && this.body[0].x === snakeList[i].body[j].x && this.body[0].y === snakeList[i].body[j].y &&snakeList[i].isGhost == false) {
+                if(!this.isGhost && !snakeList[i].isGhost && this.body[0] != snakeList[i].body[j] && this.body[0].x === snakeList[i].body[j].x && this.body[0].y === snakeList[i].body[j].y &&snakeList[i].isGhost == false) {
                     return this.kill(snakeList, scene);
                     
                 }
             }
         }
         for (var i = 1; i < this.body.length; i++) {
-            if (this.body[0].x === this.body[i].x && this.body[0].y === this.body[i].y) {
+            if (!this.isGhost && this.body[0].x === this.body[i].x && this.body[0].y === this.body[i].y) {
                 return this.kill(snakeList, scene);
                 
             }
         }
         for (var i = 0; i < listOfWalls.length; i++) {
-            if (this.body[0].x === listOfWalls[i].x && this.body[0].y === listOfWalls[i].y) {
+            if (!this.isGhost && this.body[0].x === listOfWalls[i].x && this.body[0].y === listOfWalls[i].y) {
                 return this.kill(snakeList, scene);
             }
         }
@@ -179,6 +190,22 @@ export class Snake {
                 self.direction = "right";
             }
         });
+    }
+
+    ghostMode() {
+        this.isGhost = true;
+        for(var i = 0; i < this.body.length; i++) {
+            this.body[i].block.material.transparent = true;
+            this.body[i].block.material.opacity = 0.6;
+        }
+        // After 5 seconds, the snake is no longer in ghost mode
+        setTimeout(function() {
+            this.isGhost = false;
+            for(var i = 0; i < this.body.length; i++) {
+                this.body[i].block.material.transparent = false;
+                this.body[i].block.material.opacity = 1;
+            }
+        }.bind(this), 5000);
     }
 
 }

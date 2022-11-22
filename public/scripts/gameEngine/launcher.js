@@ -8,6 +8,7 @@ import * as Snake from '../entities/snake.js';
 import * as Controls from '../entities/controls.js';
 import * as Apple from '../entities/apple.js';
 import * as Calming from '../entities/calming.js';
+import * as Potion from '../entities/potion.js';
 import * as Case from '../entities/case.js';
 import * as IA from './ia.js';
 
@@ -129,13 +130,18 @@ for(var i = 0; i < nbAI; i++) {
 var lastSpawn = new Date().getTime();
 var time = 0;
 var apple;
-var calming
+var calming;
+var potion;
 if(gameMode == "classic") {
     apple = new Apple.Apple(WorldManager.randomFreePosition(listOfEmpties, snakeList), scene);
     calming = new Calming.Calming(WorldManager.randomFreePosition(listOfEmpties, snakeList), scene);
+    potion = new Potion.Potion(WorldManager.randomFreePosition(listOfEmpties, snakeList), scene);
 } else if(gameMode == "race") {
     apple = new Apple.Apple(WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, 3, 10), scene);
+    calming = new Calming.Calming(WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, 3, 10), scene);
+    potion = new Potion.Potion(WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, 3, 10), scene);
 }
+
 
 var snakeDead = false;
 
@@ -181,7 +187,7 @@ var loop = function () {
             snakeList[i].move(scene);
             snakeList[i].lastTime = time;
             
-            snakeDead = snakeList[i].checkCollision(gameMode, snakeList, listOfWalls, apple, calming, listOfEmpties, scene, snakeDead);
+            snakeDead = snakeList[i].checkCollision(gameMode, snakeList, listOfWalls, apple, calming, potion, listOfEmpties, scene, snakeDead);
         
             if (snakeDead) {
                 snakeDead = false;
