@@ -1,16 +1,17 @@
 import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/loaders/GLTFLoader.js';
 
-export class Environnement {
-    constructor(position, scale, rotation, scene) {
+
+export class Stone {
+    constructor(position, scene) {
         this.scene = scene;
 
         const loader = new GLTFLoader();
-        loader.load('assets/models/environnement.glb', (gltf) => {
+        loader.load('assets/models/stone3.glb', (gltf) => {
             const root = gltf.scene;
-            root.position.set(position.x-0.5, position.y-0.5, -3.5*scale);
-            root.scale.set(scale*0.96, scale*0.96, scale*0.96);
+            root.position.set(position.x, position.y, -0.5);
+            root.scale.set(0.7, 0.7, 0.7);
             root.rotation.x = Math.PI / 2;
-            root.rotation.y = rotation;
+            root.rotation.y = Math.PI / 2 * Math.floor(Math.random() * 4)
             scene.add(root);
             this.block = root;
         }

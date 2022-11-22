@@ -8,7 +8,7 @@ export class Calming {
         const loader = new GLTFLoader();
         loader.load('assets/models/calming.glb', (gltf) => {
             const root = gltf.scene;
-            root.position.set(position.x, position.y, -1);
+            root.position.set(position.x, position.y, -0.7);
             root.scale.set(0.15, 0.15, 0.15);
             root.rotation.x = Math.PI / 2;
             scene.add(root);

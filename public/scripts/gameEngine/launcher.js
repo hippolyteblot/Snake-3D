@@ -39,6 +39,12 @@ var snakeColor = [
     [SNAKECOLOR7, SNAKECOLOR8]
 ];
 
+var pov = false;
+let counterViewChange = 0;
+var angle = 0;
+var oldDirection = "left";
+var povDirection = "left";
+
 
 var gameMode = document.getElementById("selectGameMode").value;
 var nbPlayers = document.getElementById("selectNbPlayer").value;
@@ -81,7 +87,7 @@ const renderer = new THREE.WebGLRenderer( { antialias: true } );
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor(0xffffff, 1);
+renderer.setClearColor(0x9ddbe3, 1);
 document.body.appendChild( renderer.domElement );
 var render = function () {
     requestAnimationFrame( render );
@@ -96,7 +102,7 @@ WorldManager.buildFloor(WORLD, scene);
 // Ajout d'une lumière
 var light = new THREE.PointLight( 0xffffff, 1, 100 );
 light.position.set(WORLD[0].length / 2, WORLD.length / 2, 20);
-light.intensity = 1.2;
+light.intensity = 1.75;
 // Ajout d'un ombre
 light.castShadow = true;
 light.shadow.mapSize.width = 1024;
@@ -122,7 +128,7 @@ for(var i = 0; i < nbPlayers; i++) {
     } else {
         var freeCase = new Case.Case(1, i * 2 + 1);
     }
-    snakeList.push(new Snake.Snake(freeCase, controlsSnake[i], snakeColor[i][0], snakeColor[i][1], false, i+1, scene));
+    snakeList.push(new Snake.Snake(freeCase, controlsSnake[i], snakeColor[i][0], snakeColor[i][1], false, i+1, scene, pov, povDirection));
 }
 for(var i = 0; i < nbAI; i++) {
     if(gameMode != "race") {
@@ -130,7 +136,7 @@ for(var i = 0; i < nbAI; i++) {
     } else {
         var freeCase = new Case.Case(1, i * 2 + 1);
     }
-    snakeList.push(new Snake.Snake(freeCase, controlsSnakeAI, SNAKECOLORIA1, SNAKECOLORIA2, true, null, scene));
+    snakeList.push(new Snake.Snake(freeCase, controlsSnakeAI, SNAKECOLORIA1, SNAKECOLORIA2, true, null, scene, pov, povDirection));
 }
 
 
@@ -170,6 +176,7 @@ loader.classList.add("disepear");
 setTimeout(function() {
     loader.style.display = "none";
 }, 1500);
+
 // Boucle principale
 var loop = function () {
 
@@ -189,14 +196,18 @@ var loop = function () {
             }
         }
     }
-    
-    if(gameMode == "race") {
-        Camera.centerCameraOnHighestSnake(snakeList, camera, light);
-    } else {
-        if(snakeList.length > 1) {
-            Camera.centerCameraOnMap(WORLD, camera);
+    if(nbPlayers == 1 && pov) {
+        counterViewChange = Camera.povCamera(snakeList[0], camera, counterViewChange, angle, oldDirection, povDirection);
+    }
+    else {
+        if(gameMode == "race") {
+            Camera.centerCameraOnHighestSnake(snakeList, camera, light);
         } else {
-            Camera.centerCameraOnPlayer(snakeList[0], camera);
+            if(snakeList.length > 1) {
+                Camera.centerCameraOnMap(WORLD, camera);
+            } else {
+                Camera.centerCameraOnPlayer(snakeList[0], camera);
+            }
         }
     }
         
@@ -209,7 +220,7 @@ var loop = function () {
                 snakeList[i].direction = IA.pathfinding(snakeList[i], apple, snakeList, listOfWalls);
             }
 
-            snakeList[i].move(scene);
+            oldDirection = snakeList[i].move(scene, oldDirection);
             snakeList[i].lastTime = time;
             
             snakeDead = snakeList[i].checkCollision(gameMode, snakeList, listOfWalls, apple, calming, potion, listOfEmpties, scene, snakeDead);

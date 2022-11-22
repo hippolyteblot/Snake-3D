@@ -5,7 +5,7 @@ import * as WorldManager from '../gameEngine/worldManager.js';
 import * as Score from '../gameEngine/score.js';
 
 export class Snake {
-    constructor(newCase, controls, color1, color2, isABot, id, scene) {
+    constructor(newCase, controls, color1, color2, isABot, id, scene, POV, povDirection) {
         this.id = id;
         this.scene = scene;
         this.score = 0;
@@ -25,12 +25,14 @@ export class Snake {
         this.isGhost = false;
         this.snakeDead = false;
 
-        this.addControls(controls.up, controls.down, controls.left, controls.right);
+        this.addControls(controls.up, controls.down, controls.left, controls.right, POV, povDirection);
     }
 
-    move(scene) {
-        for (var i = this.body.length - 1; i > 0; i--) {
+    move(scene, oldDirection) {
 
+        oldDirection = this.direction;
+        console.log("zbeub " + oldDirection);
+        for (var i = this.body.length - 1; i > 0; i--) {
             // On déplace la cellule à la position de la cellule précédente
             if(this.body[i].x > this.body[i - 1].x) {
                 this.body[i].movingDirection = "left";
@@ -80,6 +82,8 @@ export class Snake {
 
         this.body[0].block.position.x = this.body[0].x;
         this.body[0].block.position.y = this.body[0].y;
+
+        return oldDirection;
     }
 
     grow() {
@@ -126,6 +130,10 @@ export class Snake {
             // Une chance sur 5 de faire apparaitre un "calming"
             if(calming.block.position.x == -100 && Math.floor(Math.random() * 5) == 0) {
                 calming.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
+            }
+            // Une chance sur 10 de faire apparaitre une "potion"
+            if(potion.block.position.x == -100 && Math.floor(Math.random() * 10) == 0) {
+                potion.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
             }
 
         }
@@ -174,20 +182,49 @@ export class Snake {
     }
 
 
-    addControls(up, down, left, right) {
+    addControls(up, down, left, right, POV, povDirection) {
         var self = this;
         document.addEventListener("keydown", function (event) {
-            if (event.key == up && self.actualDirection != "down") {
-                self.direction = "up";
-            }
-            else if (event.key == down && self.actualDirection != "up") {
-                self.direction = "down";
-            }
-            else if (event.key == left && self.actualDirection != "right") {
-                self.direction = "left";
-            }
-            else if (event.key == right && self.actualDirection != "left") {
-                self.direction = "right";
+            if (POV) {
+                // Only use left and right arrow keys
+                
+                if (event.key == left) {
+                    povDirection = "left";
+                    if (self.actualDirection == "left") {
+                        self.direction = "down";
+                    } else if (self.actualDirection == "right") {
+                        self.direction = "up";
+                    } else if (self.actualDirection == "up") {
+                        self.direction = "left";
+                    } else if (self.actualDirection == "down") {
+                        self.direction = "right";
+                    }
+                }
+                else if (event.key == right) {
+                    povDirection = "right";
+                    if (self.actualDirection == "left") {
+                        self.direction = "up";
+                    } else if (self.actualDirection == "right") {
+                        self.direction = "down";
+                    } else if (self.actualDirection == "up") {
+                        self.direction = "right";
+                    } else if (self.actualDirection == "down") {
+                        self.direction = "left";
+                    }
+                }
+            } else {
+                if (event.key == up && self.actualDirection != "down") {
+                    self.direction = "up";
+                }
+                else if (event.key == down && self.actualDirection != "up") {
+                    self.direction = "down";
+                }
+                else if (event.key == left && self.actualDirection != "right") {
+                    self.direction = "left";
+                }
+                else if (event.key == right && self.actualDirection != "left") {
+                    self.direction = "right";
+                }
             }
         });
     }

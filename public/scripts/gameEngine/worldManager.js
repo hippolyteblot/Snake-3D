@@ -2,6 +2,7 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
 
 import * as Case from '../entities/case.js';
+import * as Stone from '../entities/stone.js';
 
 
 // Définition des constantes
@@ -123,15 +124,21 @@ export function buildWorld(WORLD, scene) {
     for (var i = 0; i < WORLD.length; i++) {
         for (var j = 0; j < WORLD[i].length; j++) {
             if (WORLD[i][j] === WALL) {
-                var wall = new THREE.Mesh( 
-                    new THREE.BoxGeometry( 1, 1, 1 ),
-                    new THREE.MeshLambertMaterial({color: 0x888888})
-                );
-                wall.position.x = j;
-                wall.position.y = i;
-                wall.receiveShadow = true;
-                wall.castShadow = true;
-                scene.add(wall);
+                var wall;
+                // Si c'est une bordure, on ajoute un mur
+                if (i === 0 || i === WORLD.length - 1 || j === 0 || j === WORLD[i].length - 1) {
+                    wall = new THREE.Mesh( 
+                        new THREE.BoxGeometry( 1, 1, 1 ),
+                        new THREE.MeshLambertMaterial({color: 0x888888})
+                    );
+                    wall.position.x = j;
+                    wall.position.y = i;
+                    wall.receiveShadow = true;
+                    wall.castShadow = true;
+                    scene.add(wall);
+                } else {
+                    wall = new Stone.Stone(new Case.Case(j, i), scene).block;
+                }
 
             }
         }
