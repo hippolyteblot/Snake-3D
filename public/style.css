@@ -70,7 +70,7 @@ button {
 }
 button:hover {
   background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  box-shadow: 0 8px 32px 0 rgba(135, 104, 31, 0.37);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
@@ -312,6 +312,13 @@ p {
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
+#loader p {
+  font-size: 1.5em;
+  font-weight: 900;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
 #loader.disepear {
   animation: faddeout 1.5s;
 }
@@ -328,3 +335,30 @@ p {
   }
 }
 
+#explain-bonus {
+  display: flex;
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(135, 104, 31, 0.37);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 10px;
+  padding: 10px;
+}
+#explain-bonus img {
+  height: 100px;
+  width: fit-content;
+  margin: 5px;
+}
+#explain-bonus div {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  width: 33%;
+}
+#explain-bonus p {
+  margin: 5px;
+  font-size: 1.2em;
+  font-weight: 400;
+  color: #333;
+}

@@ -11,8 +11,8 @@ export class Snake {
         this.score = 0;
         this.body = [];
         this.body[0] = new Cell(newCase.x, newCase.y, 0, color1, color2, this.scene, false);
-        this.direction = "right";
-        this.actualDirection = "right";
+        this.direction = "";
+        this.actualDirection = "";
         this.thinkToGrow = false;
 
         this.color1 = color1;
@@ -31,7 +31,6 @@ export class Snake {
     move(scene, oldDirection) {
 
         oldDirection = this.direction;
-        console.log("zbeub " + oldDirection);
         for (var i = this.body.length - 1; i > 0; i--) {
             // On déplace la cellule à la position de la cellule précédente
             if(this.body[i].x > this.body[i - 1].x) {
@@ -58,13 +57,8 @@ export class Snake {
             this.thinkToGrow = false;
         }
 
-        if (this.direction == "right") {
-            this.body[0].x++;
-            this.actualDirection = "right";
-            this.body[0].movingDirection = "right";
-
-        }
-        else if (this.direction == "left") {
+        
+        if (this.direction == "left") {
             this.body[0].x--;
             this.actualDirection = "left";
             this.body[0].movingDirection = "left";
@@ -78,6 +72,10 @@ export class Snake {
             this.body[0].y--;
             this.actualDirection = "down";
             this.body[0].movingDirection = "down";
+        } else {
+            this.body[0].x++;
+            this.actualDirection = "right";
+            this.body[0].movingDirection = "right";
         }
 
         this.body[0].block.position.x = this.body[0].x;
@@ -110,7 +108,7 @@ export class Snake {
         }
     }
 
-    checkCollision(gameMode, snakeList, listOfWalls, apple, calming, potion, listOfEmpties, scene) {
+    checkCollision(gameMode, snakeList, listOfWalls, apple, calming, potion, listOfEmpties, scene, WORLD) {
 
         if (gameMode != "survival" && apple.block != undefined && this.body[0].x == apple.block.position.x && this.body[0].y === apple.block.position.y) {
             this.score++;
@@ -127,8 +125,8 @@ export class Snake {
             if(!this.isABot)
                 Score.updateScore(this);
             
-            // Une chance sur 5 de faire apparaitre un "calming"
-            if(calming.block.position.x == -100 && Math.floor(Math.random() * 5) == 0) {
+            // Une chance sur 8 de faire apparaitre un "calming"
+            if(calming.block.position.x == -100 && Math.floor(Math.random() * 8) == 0) {
                 calming.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
             }
             // Une chance sur 10 de faire apparaitre une "potion"
@@ -152,7 +150,6 @@ export class Snake {
             for(var j = 0; j < snakeList[i].body.length; j++) {
                 if(!this.isGhost && !snakeList[i].isGhost && this.body[0] != snakeList[i].body[j] && this.body[0].x === snakeList[i].body[j].x && this.body[0].y === snakeList[i].body[j].y &&snakeList[i].isGhost == false) {
                     return this.kill(snakeList, scene);
-                    
                 }
             }
         }
@@ -162,8 +159,16 @@ export class Snake {
                 
             }
         }
-        for (var i = 0; i < listOfWalls.length; i++) {
-            if (!this.isGhost && this.body[0].x === listOfWalls[i].x && this.body[0].y === listOfWalls[i].y) {
+        if(!this.isGhost) {
+            for (var i = 0; i < listOfWalls.length; i++) {
+                if (this.body[0].x === listOfWalls[i].x && this.body[0].y === listOfWalls[i].y) {
+                    return this.kill(snakeList, scene);
+                }
+            }
+        } else {
+            // Only check the border of the world
+            console.log("ici");
+            if(this.body[0].x < 0 || this.body[0].x > WORLD[0].length-1 || this.body[0].y < 0 || this.body[0].y > WORLD.length-1) {
                 return this.kill(snakeList, scene);
             }
         }
@@ -230,13 +235,17 @@ export class Snake {
     }
 
     ghostMode() {
+        // If already in ghost mode, disable the last timeout
+        if(this.isGhost) {
+            clearTimeout(this.ghostTimeout);
+        }
         this.isGhost = true;
         for(var i = 0; i < this.body.length; i++) {
             this.body[i].block.material.transparent = true;
             this.body[i].block.material.opacity = 0.6;
         }
         // After 5 seconds, the snake is no longer in ghost mode
-        setTimeout(function() {
+        this.ghostTimeout = setTimeout(function() {
             this.isGhost = false;
             for(var i = 0; i < this.body.length; i++) {
                 this.body[i].block.material.transparent = false;

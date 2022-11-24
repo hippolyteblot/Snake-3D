@@ -170,11 +170,13 @@ export function buildFloor(WORLD, scene) {
     }
 }
 
-export function isEmpty(x, y, snakeList, listOfWalls) {
-    for (var i = 0; i < snakeList.length; i++) {
-        for (var j = 0; j < snakeList[i].body.length; j++) {
-            if (snakeList[i].body[j].x == x && snakeList[i].body[j].y == y) {
-                return false;
+export function isEmpty(x, y, snakeList, listOfWalls, isGhost) {
+    if(!isGhost) {
+        for (var i = 0; i < snakeList.length; i++) {
+            for (var j = 0; j < snakeList[i].body.length; j++) {
+                if (snakeList[i].body[j].x == x && snakeList[i].body[j].y == y) {
+                    return false;
+                }
             }
         }
     }

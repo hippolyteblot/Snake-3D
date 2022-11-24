@@ -98,6 +98,6 @@ export function povCamera(snake, camera, counterViewChange, angle, oldDirection,
     }
     oldDirection = dir;
 
-    return counterViewChange;
+    return [counterViewChange, oldDirection, angle];
 
 }
