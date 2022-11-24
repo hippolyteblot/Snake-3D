@@ -219,7 +219,7 @@ var loop = function () {
             snakeList[i].lastTime = time;
 
             if (snakeList[i].isABot) {
-                if(potion.block.position.x != -100)
+                if(potion && potion.block.position.x != -100)
                     snakeList[i].direction = IA.pathfinding(snakeList[i], potion, snakeList, listOfWalls, WORLD);
                 else
                     snakeList[i].direction = IA.pathfinding(snakeList[i], apple, snakeList, listOfWalls, WORLD);

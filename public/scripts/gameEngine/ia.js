@@ -7,7 +7,7 @@ import * as WorldManager from './worldManager.js';
 export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
 
     /* Dijkstra */
-    /*
+    
     var start = snake.body[0].block.position;
     var end = target.block.position;
     var world = WORLD
@@ -118,8 +118,7 @@ export function getNeighbors(current, map) {
     }
     return neighbors;
 }
-    */
-
+/*
 
     var x1 = snake.body[0].x;
     var y1 = snake.body[0].y;
@@ -168,4 +167,4 @@ export function getNeighbors(current, map) {
         }
     }
     return direction;
-}
+}*/
