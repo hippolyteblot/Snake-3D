@@ -76,8 +76,37 @@ function start() {
     // On l'affiche pendant le chargement du jeu
     loader.style.display = 'flex';
 
+    // On sauvegarde les options sélectionnées
+    var mode = document.getElementById('selectGameMode').value;
+    var nbPlayer = document.getElementById('selectNbPlayer').value;
+    var nbAI = document.getElementById('selectNbAI').value;
 
+    localStorage.setItem('mode', mode);
+    localStorage.setItem('nbPlayer', nbPlayer);
+    localStorage.setItem('nbAI', nbAI);
 }
 
 // Quand le boutton #start est cliqué, on lance la fonction start()
 document.getElementById('start').addEventListener('click', start);
+
+function setOptionsFromStorage() {
+    var mode = localStorage.getItem('mode');
+    if(!mode) {
+        mode = 'classic';
+    }
+    var nbPlayer = localStorage.getItem('nbPlayer');
+    if(!nbPlayer) {
+        nbPlayer = '1p';
+    }
+    var nbAI = localStorage.getItem('nbAI');
+    if(nbAI == null) {
+        nbAI = '0b';
+    }
+
+    document.getElementById('selectGameMode').value = mode;
+    document.getElementById('selectNbPlayer').value = nbPlayer;
+    document.getElementById('selectNbAI').value = nbAI;
+}
+
+
+setOptionsFromStorage();
