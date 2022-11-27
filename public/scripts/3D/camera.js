@@ -13,6 +13,8 @@ export function centerCameraOnMap(WORLD, camera) {
     camera.position.x = center[0];
     camera.position.y = center[1];
     camera.position.z = higher * 0.75;
+
+    camera.lookAt(center[0], center[1], 0);
 }
 
 // Centre la caméra sur le joueur du serpent passé en paramètre
@@ -21,6 +23,8 @@ export function centerCameraOnPlayer(snake, camera) {
     camera.position.x = center.x;
     camera.position.y = center.y;
     camera.position.z = 10;
+
+    camera.lookAt(center.x, center.y, 0);
 }
 // Centre la caméra sur le joueur le plus avancé
 export function centerCameraOnHighestSnake(snakeList, camera, light) {
@@ -34,21 +38,24 @@ export function centerCameraOnHighestSnake(snakeList, camera, light) {
 }
 
 
-export function povCamera(snake, camera, counterViewChange, angle, oldDirection, povDirection) {
-    const FPS = 30;
+export function povCamera(snake, camera, counterViewChange, angle) {
+    if(snake.isABot) {
+        return centerCameraOnPlayer(snake, camera);
+    }
+    const FPS = 15;
     const piDividFPS = Math.PI / FPS;
-    
+
+    var povDirection = snake.povDirection
     camera.position.x = snake.body[0].block.position.x;
     camera.position.y = snake.body[0].block.position.y;
     camera.position.z = 1;
     camera.lookAt(snake.body[0].block.position);
     // Rotate of 90°
     camera.rotateX(Math.PI / 2);
-    camera.rotateY(Math.PI / 2);
 
     var dir = snake.direction;
-    if (dir != oldDirection) {
-        counterViewChange = 30;
+    if (dir != snake.oldDirection) {
+        counterViewChange = FPS;
     }
     
     if (dir == "down") {
@@ -96,8 +103,9 @@ export function povCamera(snake, camera, counterViewChange, angle, oldDirection,
     } else {
         camera.rotation.y = angle;
     }
-    oldDirection = dir;
+    snake.oldDirection = dir;
+    
 
-    return [counterViewChange, oldDirection, angle];
+    return [counterViewChange, angle];
 
 }

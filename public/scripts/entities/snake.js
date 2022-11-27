@@ -186,14 +186,14 @@ export class Snake {
     }
 
 
-    addControls(up, down, left, right, POV, povDirection) {
+    addControls(up, down, left, right, POV) {
         var self = this;
         document.addEventListener("keydown", function (event) {
             if (POV) {
                 // Only use left and right arrow keys
                 
                 if (event.key == left) {
-                    povDirection = "left";
+                    self.povDirection = "left";
                     if (self.actualDirection == "left") {
                         self.direction = "down";
                     } else if (self.actualDirection == "right") {
@@ -205,7 +205,7 @@ export class Snake {
                     }
                 }
                 else if (event.key == right) {
-                    povDirection = "right";
+                    self.povDirection = "right";
                     if (self.actualDirection == "left") {
                         self.direction = "up";
                     } else if (self.actualDirection == "right") {

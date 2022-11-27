@@ -80,11 +80,10 @@ export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     if (path[1].y < path[0].y) {
         direction = "down";
     }
-
     return direction;
 }
 
-export function includesSame(array, element) {
+function includesSame(array, element) {
     for (var i = 0; i < array.length; i++) {
         if (array[i].x == element.x && array[i].y == element.y) {
             return true;
@@ -93,7 +92,7 @@ export function includesSame(array, element) {
     return false;
 }
 
-export function indexOf(array, element) {
+function indexOf(array, element) {
     for (var i = 0; i < array.length; i++) {
         if (array[i].x == element.x && array[i].y == element.y) {
             return i;
@@ -102,7 +101,7 @@ export function indexOf(array, element) {
     return -1;
 }
 
-export function getNeighbors(current, map) {
+function getNeighbors(current, map) {
     var neighbors = [];
     if (current.x > 0 && map[current.y][current.x - 1] == 0) {
         neighbors.push({ x: current.x - 1, y: current.y });

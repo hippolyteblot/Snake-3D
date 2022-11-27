@@ -39,11 +39,10 @@ var snakeColor = [
     [SNAKECOLOR7, SNAKECOLOR8]
 ];
 
-var pov = false;
+var pov = true;
 let counterViewChange = 0;
-var angle = 0;
+var angle = -Math.PI/2;
 var oldDirection = "left";
-var povDirection = "left";
 
 
 var gameMode = document.getElementById("selectGameMode").value;
@@ -128,7 +127,7 @@ for (var i = 0; i < nbPlayers; i++) {
     } else {
         var freeCase = new Case.Case(1, i * 2 + 1);
     }
-    snakeList.push(new Snake.Snake(freeCase, controlsSnake[i], snakeColor[i][0], snakeColor[i][1], false, i + 1, scene, pov, povDirection));
+    snakeList.push(new Snake.Snake(freeCase, controlsSnake[i], snakeColor[i][0], snakeColor[i][1], false, i + 1, scene, pov));
 }
 for (var i = 0; i < nbAI; i++) {
     if (gameMode != "race") {
@@ -136,7 +135,7 @@ for (var i = 0; i < nbAI; i++) {
     } else {
         var freeCase = new Case.Case(1, i * 2 + 1);
     }
-    snakeList.push(new Snake.Snake(freeCase, controlsSnakeAI, SNAKECOLORIA1, SNAKECOLORIA2, true, null, scene, pov, povDirection));
+    snakeList.push(new Snake.Snake(freeCase, controlsSnakeAI, SNAKECOLORIA1, SNAKECOLORIA2, true, null, scene, pov));
 }
 
 
@@ -195,11 +194,10 @@ var loop = function () {
             }
         }
     }
-    if (nbPlayers == 1 && pov) {
-        var tmpVar = Camera.povCamera(snakeList[0], camera, counterViewChange, angle, oldDirection, povDirection);
+    if (nbPlayers == 1 && pov && !snakeList[0].isABot) {
+        var tmpVar = Camera.povCamera(snakeList[0], camera, counterViewChange, angle, oldDirection);
         counterViewChange = tmpVar[0];
-        angle = tmpVar[2];
-        oldDirection = tmpVar[1];
+        angle = tmpVar[1];
     }
     else {
         if (gameMode == "race") {
