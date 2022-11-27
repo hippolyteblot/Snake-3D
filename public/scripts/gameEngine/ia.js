@@ -3,16 +3,15 @@
 import * as Case from '../entities/case.js';
 import * as WorldManager from './worldManager.js';
 
-// Pathfinding - Version naïve (calcul des coordonnées pour déterminer la prochaine case)
+// Pathfinding - Version avec recherche de plus court chemin
 export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
 
     /* Dijkstra */
-    /*
-    var start = snake.body[0].block.position;
+    var start = snake.body[0];
     var end = target.block.position;
-    var world = WORLD
-    var width = world[0].length;
-    var height = world.length;
+    var world = WORLD;
+    var width = world.length;
+    var height = world[0].length;
     var map = new Array(height);
     for (var i = 0; i < height; i++) {
         map[i] = new Array(width);
@@ -24,7 +23,7 @@ export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     }
     for (var i = 0; i < snakeList.length; i++) {
         for (var j = 0; j < snakeList[i].body.length; j++) {
-            map[snakeList[i].body[j].block.position.y][snakeList[i].body[j].block.position.x] = 1;
+            map[snakeList[i].body[j].y][snakeList[i].body[j].x] = 1;
         }
     }
     for (var i = 0; i < listOfWalls.length; i++) {
@@ -40,7 +39,6 @@ export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
 
     while (queue.length > 0) {
         var current = queue.shift();
-        console.log(end);
         if (current.x == end.x && current.y == end.y) {
             break;
         }
@@ -56,12 +54,14 @@ export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
 
     var path = [];
     var current = end;
-    console.log("avant");
     while (current.x != start.x || current.y != start.y) {
-        console.log("pendant");
         path.push(current);
         current = parent[indexOf(visited, current)];
-        console.log(current);
+        // If we can't find the path, we use the naive pathfinding
+        if (current == undefined) {
+            return naivePathfinding(snake, target, snakeList, listOfWalls);
+        }
+            
     }
     path.push(start);
     path.reverse();
@@ -75,10 +75,10 @@ export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
         direction = "left";
     }
     if (path[1].y > path[0].y) {
-        direction = "down";
+        direction = "up";
     }
     if (path[1].y < path[0].y) {
-        direction = "up";
+        direction = "down";
     }
 
     return direction;
@@ -118,8 +118,9 @@ export function getNeighbors(current, map) {
     }
     return neighbors;
 }
-    */
 
+// Pathfinding - Version naïve (calcul des coordonnées pour déterminer la prochaine case)
+function naivePathfinding(snake, target, snakeList, listOfWalls) {
 
     var x1 = snake.body[0].x;
     var y1 = snake.body[0].y;

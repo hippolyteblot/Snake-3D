@@ -122,6 +122,7 @@ p {
   flex-direction: column;
   /* Désactivation de la sélection de texte */
   -webkit-user-select: none;
+  user-select: none;
   width: fit-content;
   border-radius: 5px;
   padding: 5px;
@@ -285,9 +286,9 @@ p {
 }
 
 #blockScore4 {
-  border-color: rgb(255, 0, 238);
-  background-color: rgb(255, 204, 255);
-  color: rgb(255, 0, 238);
+  border-color: rgb(51, 156, 69);
+  background-color: rgb(204, 255, 204);
+  color: rgb(51, 156, 69);
   bottom: 10px;
   right: 10px;
 }

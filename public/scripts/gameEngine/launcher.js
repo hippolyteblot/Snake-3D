@@ -26,8 +26,8 @@ const SNAKECOLOR4 = 0xff821c;
 const SNAKECOLOR5 = 0x28c9fa;
 const SNAKECOLOR6 = 0x1c1ce8;
 
-const SNAKECOLOR7 = 0xbf0202;
-const SNAKECOLOR8 = 0xe017ff;
+const SNAKECOLOR7 = 0x47e03f;
+const SNAKECOLOR8 = 0x2c8f55;
 
 const SNAKECOLORIA1 = 0x9c9c9c;
 const SNAKECOLORIA2 = 0xebebeb;
@@ -219,7 +219,7 @@ var loop = function () {
             snakeList[i].lastTime = time;
 
             if (snakeList[i].isABot) {
-                if(potion.block.position.x != -100)
+                if(potion && potion.block.position.x != -100)
                     snakeList[i].direction = IA.pathfinding(snakeList[i], potion, snakeList, listOfWalls, WORLD);
                 else
                     snakeList[i].direction = IA.pathfinding(snakeList[i], apple, snakeList, listOfWalls, WORLD);
