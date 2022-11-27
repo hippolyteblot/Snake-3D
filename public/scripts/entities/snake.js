@@ -166,8 +166,7 @@ export class Snake {
                 }
             }
         } else {
-            // Only check the border of the world
-            console.log("ici");
+            // On vérifie uniquement les bordures
             if(this.body[0].x < 0 || this.body[0].x > WORLD[0].length-1 || this.body[0].y < 0 || this.body[0].y > WORLD.length-1) {
                 return this.kill(snakeList, scene);
             }
