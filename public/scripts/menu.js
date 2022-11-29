@@ -2,9 +2,8 @@
 var infos = document.getElementsByClassName('info');
 var optionSelected = "";
 var select = document.getElementById('selectGameMode');
-// Foreach select element, add an event listener to it
+// Pour chaque élément sélectionné, on affiche les infos correspondantes
 select.addEventListener('change', function() {
-    // Delete the previous options selected
     optionSelected = this.value;
     printInfos(optionSelected);
 });
@@ -33,7 +32,7 @@ function removeClassToElements(elements, className) {
 
 selectNbPlayer.addEventListener('change', function() {
     
-    /* On retire le dernier caractère de la valeur du selectNbPlayer pour avoir le nombre de joueurs */
+    // On retire le dernier caractère de la valeur du selectNbPlayer pour avoir le nombre de joueurs
     var nbPlayer = this.value.substring(0, this.value.length - 1);
     if(nbPlayer >= 2) {
         addClassToElements(document.getElementsByClassName('zqsd'), 'active');
@@ -84,6 +83,7 @@ function start() {
     localStorage.setItem('mode', mode);
     localStorage.setItem('nbPlayer', nbPlayer);
     localStorage.setItem('nbAI', nbAI);
+    localStorage.setItem('pov', document.getElementById('firstPersonCheckbox').checked);
 }
 
 // Quand le boutton #start est cliqué, on lance la fonction start()
@@ -102,10 +102,18 @@ function setOptionsFromStorage() {
     if(nbAI == null) {
         nbAI = '0b';
     }
-
+    var pov = localStorage.getItem('pov');
+    if(!pov) {
+        pov = "false";
+    }
     document.getElementById('selectGameMode').value = mode;
     document.getElementById('selectNbPlayer').value = nbPlayer;
     document.getElementById('selectNbAI').value = nbAI;
+    if(pov == "true") {
+        document.getElementById('firstPersonCheckbox').checked = true;
+    } else {
+        document.getElementById('firstPersonCheckbox').checked = false;
+    }
 }
 
 

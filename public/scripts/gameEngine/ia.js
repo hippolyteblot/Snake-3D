@@ -57,7 +57,7 @@ export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     while (current.x != start.x || current.y != start.y) {
         path.push(current);
         current = parent[indexOf(visited, current)];
-        // If we can't find the path, we use the naive pathfinding
+        // Si on ne trouve pas de chemin, on utilise le pathfinding naif
         if (current == undefined) {
             return naivePathfinding(snake, target, snakeList, listOfWalls);
         }
@@ -66,7 +66,7 @@ export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     path.push(start);
     path.reverse();
 
-    // Get the direction to go
+    // On récupère la direction à prendre
     var direction = "";
     if (path[1].x > path[0].x) {
         direction = "right";

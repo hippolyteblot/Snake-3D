@@ -44,14 +44,22 @@
             <p class="info" id="survival">In survival mode, there is no apple. Here, each snake will grow every 3 seconds... Be the last survivor!
         </div>
         <!-- Sélection du nombre de joueurs -->
-        <div class="nbPlayer">
-            <h2>Choose the number of players</h2>
-            <select id="selectNbPlayer">
-                <option value="1p">1 player</option>
-                <option value="2p">2 players</option>
-                <option value="3p">3 players</option>
-                <option value="4p">4 players</option>
-            </select>
+        <h2>Choose the number of players</h2>
+        <div class="flex-container">
+            <div class="nbPlayer">
+                
+                <select id="selectNbPlayer">
+                    <option value="1p">1 player</option>
+                    <option value="2p">2 players</option>
+                    <option value="3p">3 players</option>
+                    <option value="4p">4 players</option>
+                </select>
+            </div>
+            <!-- Checkbox pour le mode Première personne -->
+            <div id="firstPerson">
+                <input type="checkbox" id="firstPersonCheckbox">
+                <label for="firstPersonCheckbox">Mode première personne (1 joueur uniquement)</label>
+            </div>
         </div>
 
         <br />

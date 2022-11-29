@@ -234,7 +234,7 @@ export class Snake {
     }
 
     ghostMode() {
-        // If already in ghost mode, disable the last timeout
+        // Si le serpent est déjà en mode fantôme, on annule l'ancien timout
         if(this.isGhost) {
             clearTimeout(this.ghostTimeout);
         }
@@ -243,7 +243,7 @@ export class Snake {
             this.body[i].block.material.transparent = true;
             this.body[i].block.material.opacity = 0.6;
         }
-        // After 5 seconds, the snake is no longer in ghost mode
+        // Après 5 secondes, on remet le mode normal
         this.ghostTimeout = setTimeout(function() {
             this.isGhost = false;
             for(var i = 0; i < this.body.length; i++) {

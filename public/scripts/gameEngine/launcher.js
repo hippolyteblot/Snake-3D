@@ -39,18 +39,22 @@ var snakeColor = [
     [SNAKECOLOR7, SNAKECOLOR8]
 ];
 
-var pov = true;
 let counterViewChange = 0;
 var angle = -Math.PI/2;
 var oldDirection = "left";
 
 
 var gameMode = document.getElementById("selectGameMode").value;
+
+var pov = document.getElementById("firstPersonCheckbox").checked;
 var nbPlayers = document.getElementById("selectNbPlayer").value;
+nbPlayers = nbPlayers.substring(0, nbPlayers.length - 1);
+if(pov) {
+    nbPlayers = 1;
+}
 var nbAI = document.getElementById("selectNbAI").value;
 
 // On supprime le dernier caractère pour avoir un nombre
-nbPlayers = nbPlayers.substring(0, nbPlayers.length - 1);
 nbAI = nbAI.substring(0, nbAI.length - 1);
 
 // On construit les scores
@@ -191,6 +195,11 @@ var loop = function () {
             lastSpawn = new Date().getTime();
             for (var i = 0; i < snakeList.length; i++) {
                 snakeList[i].grow();
+                // On met à jour le score des joueurs
+                if (!snakeList[i].isABot) {
+                    snakeList[i].score ++;
+                    Score.updateScore(snakeList[i]);
+                }
             }
         }
     }
@@ -219,8 +228,15 @@ var loop = function () {
             if (snakeList[i].isABot) {
                 if(potion && potion.block.position.x != -100)
                     snakeList[i].direction = IA.pathfinding(snakeList[i], potion, snakeList, listOfWalls, WORLD);
-                else
+                if(apple && apple.block.position.x != -100)
                     snakeList[i].direction = IA.pathfinding(snakeList[i], apple, snakeList, listOfWalls, WORLD);
+                else {
+                    let randomFreePosition = WorldManager.randomFreePosition(listOfEmpties, snakeList);
+                    var tmp = {block: {position: {x: randomFreePosition.x, y: randomFreePosition.y}}};
+
+                    snakeList[i].direction = IA.pathfinding(snakeList[i], tmp, snakeList, listOfWalls, WORLD);
+                }
+                    
             }
 
             oldDirection = snakeList[i].move(scene, oldDirection);

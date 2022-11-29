@@ -105,6 +105,10 @@ p {
   justify-content: center;
 }
 
+#firstPerson {
+  font-size: 1.2em;
+}
+
 .info {
   display: none;
   /* Glassmorphism */
@@ -115,6 +119,19 @@ p {
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   padding: 10px;
+}
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  /* Style glassmorphism */
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(135, 104, 31, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 #keyboard {
