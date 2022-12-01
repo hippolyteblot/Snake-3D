@@ -133,7 +133,7 @@ export class Snake {
                 calming.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
             }
             // Une chance sur 10 de faire apparaitre une "potion"
-            if(potion.block.position.x == -100 && Math.floor(Math.random() * 5) == 0) {
+            if(potion.block.position.x == -100 && Math.floor(Math.random() * 10) == 0) {
                 potion.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
             }
 

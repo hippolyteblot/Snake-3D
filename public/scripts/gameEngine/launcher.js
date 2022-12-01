@@ -247,7 +247,7 @@ async function main(){
             if (time > snakeList[i].lastTime + snakeList[i].delay) {
                 snakeList[i].lastTime = time;
 
-                if (!snakeList[i].isABot)
+                if (snakeList[i].isABot)
                     IA.chooseTarget(snakeList[i], snakeList, potion, apple, listOfWalls, listOfEmpties, WORLD);
 
                 oldDirection = snakeList[i].move(scene, oldDirection);
