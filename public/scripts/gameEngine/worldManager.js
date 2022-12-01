@@ -187,3 +187,23 @@ export function isEmpty(x, y, snakeList, listOfWalls, isGhost) {
     }
     return true;
 }
+
+export async function loadFromJSON(url) {
+    var map = await fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        });
+    var WORLD = generateTemplate(map.dimensions, map.dimensions);
+
+    for(var i = 0; i < WORLD[0].length; i++) {
+        for(var j = 0; j < WORLD.length; j++) {
+            for(var k = 0; k < map.walls.length; k++) {
+                if(map.walls[k][0] === i && map.walls[k][1] === j) {
+                    WORLD[j][i] = WALL;
+                }
+            }
+        }
+    }
+    return [WORLD, map];
+}

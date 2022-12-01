@@ -1,10 +1,7 @@
-
-
-import * as Case from '../entities/case.js';
 import * as WorldManager from './worldManager.js';
 
 // Pathfinding - Version avec recherche de plus court chemin
-export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
+function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
 
     /* Dijkstra */
     var start = snake.body[0];
@@ -56,7 +53,7 @@ export function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     var current = end;
     while (current.x != start.x || current.y != start.y) {
         path.push(current);
-        current = parent[indexOf(visited, current)];
+        current = parent[indexOfValue(visited, current)];
         // Si on ne trouve pas de chemin, on utilise le pathfinding naif
         if (current == undefined) {
             return naivePathfinding(snake, target, snakeList, listOfWalls);
@@ -92,7 +89,8 @@ function includesSame(array, element) {
     return false;
 }
 
-function indexOf(array, element) {
+// Fonction exisante reprogrammée pour ne pas se baser sur la référence de l'objet mais sur ses valeurs
+function indexOfValue(array, element) {
     for (var i = 0; i < array.length; i++) {
         if (array[i].x == element.x && array[i].y == element.y) {
             return i;
@@ -168,4 +166,17 @@ function naivePathfinding(snake, target, snakeList, listOfWalls) {
         }
     }
     return direction;
+}
+
+export function chooseTarget(snake, snakeList, potion, apple, listOfWalls, listOfEmpties, WORLD) {
+    // Si une potion est disponible, on la prend. Sinon, on va vers la pomme. Enfin, on va vers une case vide.
+    if(potion && potion.block.position.x != -100)
+        snake.direction = pathfinding(snake, potion, snakeList, listOfWalls, WORLD);
+    else if(apple && apple.block.position.x != -100)
+        snake.direction = pathfinding(snake, apple, snakeList, listOfWalls, WORLD);
+    else {
+        let randomFreePosition = WorldManager.randomFreePosition(listOfEmpties, snakeList);
+        var tmp = {block: {position: {x: randomFreePosition.x, y: randomFreePosition.y}}};
+        snake.direction = pathfinding(snake, tmp, snakeList, listOfWalls, WORLD);
+    }
 }

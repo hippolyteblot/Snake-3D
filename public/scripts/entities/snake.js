@@ -118,6 +118,9 @@ export class Snake {
             else {
                 var highestSnakeX = WorldManager.getHighestSnake(snakeList).body[0].x;
                 var position = WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, highestSnakeX + 3, highestSnakeX + 10)
+                if(!position) {
+                    position = [-100, -100];
+                }
                 apple.updatePosition(position);
             }
                 
@@ -130,7 +133,7 @@ export class Snake {
                 calming.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
             }
             // Une chance sur 10 de faire apparaitre une "potion"
-            if(potion.block.position.x == -100 && Math.floor(Math.random() * 10) == 0) {
+            if(potion.block.position.x == -100 && Math.floor(Math.random() * 5) == 0) {
                 potion.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
             }
 
@@ -162,6 +165,11 @@ export class Snake {
         if(!this.isGhost) {
             for (var i = 0; i < listOfWalls.length; i++) {
                 if (this.body[0].x === listOfWalls[i].x && this.body[0].y === listOfWalls[i].y) {
+                    // Dans le cas du mode course, si le jouteur touche le mur droit, il gagne
+                    if(gameMode == "race" && listOfWalls[i].x == WORLD.width - 1) {
+                        alert("Le joueur " + this.id + " a gagné !");
+                        window.location.reload();
+                    }
                     return this.kill(snakeList, scene);
                 }
             }

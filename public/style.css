@@ -99,6 +99,24 @@ p {
   padding: 0;
 }
 
+#levelSelection {
+  display: none;
+  flex-direction: row;
+  align-items: space-between;
+}
+.mapSize, .loadLevel {
+  width: 50%;
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(135, 104, 31, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 10px;
+  margin: 10px;
+  padding-top: 0;
+}
 #imgs {
   display: flex;
   align-items: center;

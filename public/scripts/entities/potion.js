@@ -1,6 +1,5 @@
 import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/loaders/GLTFLoader.js';
 
-
 export class Potion {
     constructor(position, scene) {
         this.scene = scene;

@@ -109,3 +109,24 @@ export function povCamera(snake, camera, counterViewChange, angle) {
     return [counterViewChange, angle];
 
 }
+
+export function cameraSelection(snakeList, camera, light, counterViewChange, angle, pov, gameMode, 
+    nbPlayers, WORLD, oldDirection) {
+    if (nbPlayers == 1 && pov && !snakeList[0].isABot) {
+        var tmpVar = povCamera(snakeList[0], camera, counterViewChange, angle, oldDirection);
+        counterViewChange = tmpVar[0];
+        angle = tmpVar[1];
+    }
+    else {
+        if (gameMode == "race") {
+            centerCameraOnHighestSnake(snakeList, camera, light);
+        } else {
+            if (snakeList.length > 1) {
+                centerCameraOnMap(WORLD, camera);
+            } else {
+                centerCameraOnPlayer(snakeList[0], camera);
+            }
+        }
+    }
+    return [counterViewChange, angle];
+}

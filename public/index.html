@@ -160,6 +160,33 @@
         <!-- Bouton de lancement de la partie -->
         <button id="start">Start</button>
     </article>
+
+    <article id="levelSelection">
+        <div class="mapSize">
+            <h2>Choose the size of the map</h2>
+            <select id="selectLevelSize">
+                <option value="10">Small</option>
+                <option value="18">Medium</option>
+                <option value="36">Large</option>
+            </select>
+            <h2>Choose the difficulty (wall density)</h2>
+            <select id="selectLevelDifficulty">
+                <option value="0">Peaceful</option>
+                <option value="1">Easy</option>
+                <option value="5">Medium</option>
+                <option value="10">Hard</option>
+            </select>
+            <button id="startLevelGeneration">Start</button>
+        </div>
+        <div class="loadLevel">
+            <h2>Or load a map</h2>
+            <select id="chooseLevel">
+            </select>
+            <button id="startLevelPrebuild">Start</button>
+        </div>
+    </article>
+
+
     <!-- Canevas pour le rendu 3D -->
     <div id="canvas"></div>
 

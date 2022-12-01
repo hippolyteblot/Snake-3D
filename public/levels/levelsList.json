@@ -1,0 +1,16 @@
+{
+    "levels": [
+        {
+            "name": "Empty map",
+            "path": "level1.json"
+        },
+        {
+            "name": "Square arena",
+            "path": "level2.json"
+        },
+        {
+            "name": "Pacman map",
+            "path": "level3.json"
+        }
+    ]
+}
