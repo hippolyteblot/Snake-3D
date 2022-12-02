@@ -5,6 +5,7 @@ export class Potion {
         this.scene = scene;
 
         const loader = new GLTFLoader();
+        // Charge le modèle 3D
         loader.load('assets/models/potion.glb', (gltf) => {
             const root = gltf.scene;
             root.position.set(position.x, position.y, -0.5);
@@ -18,16 +19,18 @@ export class Potion {
         }
         );
     }
-
+    // Supprime l'objet de la scène
     remove() {
         this.scene.remove(this.block);
     }
 
+    // Change sa position
     updatePosition(newCase) {
         this.block.position.x = newCase.x;
         this.block.position.y = newCase.y;
     }
 
+    // Fait tourner l'objet
     rotate() {
         this.block.rotation.y += 0.05;
     }

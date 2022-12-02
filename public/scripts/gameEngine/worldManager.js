@@ -43,6 +43,7 @@ export function generateLevel(difficulty, template) {
     return level;
 }
 
+// Remplissage des listes de cases vide et de murs
 export function fillLists(listOfWalls, listOfEmpties, level) {
     for (var i = 0; i < level.length; i++) {
         for (var j = 0; j < level[i].length; j++) {
@@ -55,6 +56,7 @@ export function fillLists(listOfWalls, listOfEmpties, level) {
     }
 }
 
+// Retourne une case vide aléatoire
 export function randomFreePosition(listOfEmpties, snakeList) {
     // Copy the list of empties
     var freeArray = listOfEmpties.slice();
@@ -73,10 +75,11 @@ export function randomFreePosition(listOfEmpties, snakeList) {
     return freeArray[randomIndex];
 }
 
+// Retourne une case vide aléatoire entre de valeur d'absisse (pour le mode "race")
 export function randomFreePositionBetween(listOfEmpties, snakeList, min, max) {
     
     var highestX = 0;
-    for (var i = 0; i < listOfEmpties.length; i++) {
+    for (let i = 0; i < listOfEmpties.length; i++) {
         if (listOfEmpties[i].x > highestX) {
             highestX = listOfEmpties[i].x;
         }
@@ -86,7 +89,7 @@ export function randomFreePositionBetween(listOfEmpties, snakeList, min, max) {
     }
 
     var freeArray = [];
-    for (var i = 0; i < listOfEmpties.length; i++) {
+    for (let i = 0; i < listOfEmpties.length; i++) {
         if (listOfEmpties[i].x >= min && listOfEmpties[i].x <= max) {
             freeArray.push(listOfEmpties[i]);
         }
@@ -110,6 +113,7 @@ export function randomFreePositionBetween(listOfEmpties, snakeList, min, max) {
     return freeArray[index];
 }
 
+// Retourne le serpent avec l'absisse la plus élevée
 export function getHighestSnake(snakeList) {
     var highestSnake = snakeList[0];
     for (var i = 1; i < snakeList.length; i++) {
@@ -119,7 +123,7 @@ export function getHighestSnake(snakeList) {
     }
     return highestSnake;
 }
-
+// Construction 3D de l'arène
 export function buildWorld(WORLD, scene) {
     for (var i = 0; i < WORLD.length; i++) {
         for (var j = 0; j < WORLD[i].length; j++) {
@@ -144,7 +148,7 @@ export function buildWorld(WORLD, scene) {
         }
     }
 }
-
+// Construction du sol
 export function buildFloor(WORLD, scene) {
     var width = WORLD[0].length;
     var height = WORLD.length;
@@ -169,25 +173,25 @@ export function buildFloor(WORLD, scene) {
         }
     }
 }
-
+// Verifie qu'une case est libre
 export function isEmpty(x, y, snakeList, listOfWalls, isGhost) {
     if(!isGhost) {
-        for (var i = 0; i < snakeList.length; i++) {
-            for (var j = 0; j < snakeList[i].body.length; j++) {
+        for (let i = 0; i < snakeList.length; i++) {
+            for (let j = 0; j < snakeList[i].body.length; j++) {
                 if (snakeList[i].body[j].x == x && snakeList[i].body[j].y == y) {
                     return false;
                 }
             }
         }
     }
-    for (var i = 0; i < listOfWalls.length; i++) {
+    for (let i = 0; i < listOfWalls.length; i++) {
         if (listOfWalls[i].x == x && listOfWalls[i].y == y) {
             return false;
         }
     }
     return true;
 }
-
+// Permet le chargement de niveau depuis un fichier json
 export async function loadFromJSON(url) {
     var map = await fetch(url)
         .then(response => response.json())
@@ -196,9 +200,9 @@ export async function loadFromJSON(url) {
         });
     var WORLD = generateTemplate(map.dimensions, map.dimensions);
 
-    for(var i = 0; i < WORLD[0].length; i++) {
-        for(var j = 0; j < WORLD.length; j++) {
-            for(var k = 0; k < map.walls.length; k++) {
+    for(let i = 0; i < WORLD[0].length; i++) {
+        for(let j = 0; j < WORLD.length; j++) {
+            for(let k = 0; k < map.walls.length; k++) {
                 if(map.walls[k][0] === i && map.walls[k][1] === j) {
                     WORLD[j][i] = WALL;
                 }

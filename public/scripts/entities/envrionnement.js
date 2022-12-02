@@ -5,6 +5,7 @@ export class Environnement {
         this.scene = scene;
 
         const loader = new GLTFLoader();
+        // Chargement du modèle 3D
         loader.load('assets/models/environnement.glb', (gltf) => {
             const root = gltf.scene;
             root.position.set(position.x-0.5, position.y-0.5, -3.5*scale);
@@ -17,10 +18,12 @@ export class Environnement {
         );
     }
 
+    // Supprime l'objet de la scène
     remove() {
         this.scene.remove(this.block);
     }
 
+    // Change sa position
     updatePosition(newCase) {
         this.block.position.x = newCase.x;
         this.block.position.y = newCase.y;

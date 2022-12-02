@@ -10,20 +10,20 @@ function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     var width = world.length;
     var height = world[0].length;
     var map = new Array(height);
-    for (var i = 0; i < height; i++) {
+    for (let i = 0; i < height; i++) {
         map[i] = new Array(width);
     }
-    for (var i = 0; i < height; i++) {
-        for (var j = 0; j < width; j++) {
+    for (let i = 0; i < height; i++) {
+        for (let j = 0; j < width; j++) {
             map[i][j] = 0;
         }
     }
-    for (var i = 0; i < snakeList.length; i++) {
-        for (var j = 0; j < snakeList[i].body.length; j++) {
+    for (let i = 0; i < snakeList.length; i++) {
+        for (let j = 0; j < snakeList[i].body.length; j++) {
             map[snakeList[i].body[j].y][snakeList[i].body[j].x] = 1;
         }
     }
-    for (var i = 0; i < listOfWalls.length; i++) {
+    for (let i = 0; i < listOfWalls.length; i++) {
         map[listOfWalls[i].y][listOfWalls[i].x] = 1;
     }
     var queue = [];
@@ -34,8 +34,10 @@ function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     visited.push(start);
     parent.push(start);
 
+    var current;
+
     while (queue.length > 0) {
-        var current = queue.shift();
+        current = queue.shift();
         if (current.x == end.x && current.y == end.y) {
             break;
         }
@@ -50,7 +52,7 @@ function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     }
 
     var path = [];
-    var current = end;
+    current = end;
     while (current.x != start.x || current.y != start.y) {
         path.push(current);
         current = parent[indexOfValue(visited, current)];
@@ -80,6 +82,7 @@ function pathfinding(snake, target, snakeList, listOfWalls, WORLD) {
     return direction;
 }
 
+// Fonction exisante reprogrammée pour ne pas se baser sur la référence de l'objet mais sur ses valeurs
 function includesSame(array, element) {
     for (var i = 0; i < array.length; i++) {
         if (array[i].x == element.x && array[i].y == element.y) {
@@ -98,7 +101,7 @@ function indexOfValue(array, element) {
     }
     return -1;
 }
-
+// Renvoie les voisins d'une case
 function getNeighbors(current, map) {
     var neighbors = [];
     if (current.x > 0 && map[current.y][current.x - 1] == 0) {
@@ -168,6 +171,7 @@ function naivePathfinding(snake, target, snakeList, listOfWalls) {
     return direction;
 }
 
+// Choisit une cible pour générer le pathfinding en fonction de la situation
 export function chooseTarget(snake, snakeList, potion, apple, listOfWalls, listOfEmpties, WORLD) {
     // Si une potion est disponible, on la prend. Sinon, on va vers la pomme. Enfin, on va vers une case vide.
     if(potion && potion.block.position.x != -100)

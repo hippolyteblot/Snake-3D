@@ -1,6 +1,7 @@
 // Import de Three.js (depuis un CDN pour alléger le projet)
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
 
+// Décrit une cellule composant le serpent
 export class Cell {
     constructor(x, y, i, color1, color2, scene, isGhost) {
         var color = color1;

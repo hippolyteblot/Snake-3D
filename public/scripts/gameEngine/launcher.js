@@ -76,16 +76,17 @@ async function main(){
         WORLD = tmp[0];
         map = tmp[1];
     } else {
+        var template;
 
         if (gameMode == "classic" || gameMode == "survival") {
             var size = parseInt(document.getElementById("selectLevelSize").value);
-            var template = WorldManager.generateTemplate(size, size);
+            template = WorldManager.generateTemplate(size, size);
             let difficulty = parseInt(document.getElementById("selectLevelDifficulty").value);
             WORLD = WorldManager.generateLevel(difficulty, template);
         } else if (gameMode == "race") {
             var nbRows = (parseInt(nbAI) + parseInt(nbPlayers)) * 3;
             var nbCols = parseInt(document.getElementById("selectLevelSize").value) * 15;
-            var template = WorldManager.generateTemplate(nbRows, nbCols);
+            template = WorldManager.generateTemplate(nbRows, nbCols);
             let difficulty = parseInt(document.getElementById("selectLevelDifficulty").value);
             WORLD = WorldManager.generateLevel(difficulty, template);
         }
@@ -139,21 +140,21 @@ async function main(){
 
     // Générations et placement des serpents en fonction du nombre de joueurs et du mode de jeu
     var snakeList = [];
-    for (var i = 0; i < nbPlayers; i++) {
+    var freeCase;
+    for (let i = 0; i < nbPlayers; i++) {
         if (gameMode != "race") {
-            var freeCase;
             if(map) 
                 freeCase = map["snake" + (i + 1)];
             else
                 freeCase = listOfEmpties[Math.floor(Math.random() * listOfEmpties.length)];
         } else {
-            var freeCase = new Case.Case(1, i * 2 + 1);
+            freeCase = new Case.Case(1, i * 2 + 1);
         }
         snakeList.push(new Snake.Snake(freeCase, controlsSnake[i], snakeColor[i][0], snakeColor[i][1], false, i + 1, scene, pov));
     }
-    for (var i = 0; i < nbAI; i++) {
+    for (let i = 0; i < nbAI; i++) {
         if (gameMode != "race") {
-            var freeCase;
+            freeCase;
             if(map){
                 var count = i + 1 + parseInt(nbPlayers);
                 freeCase = map["snake" + count];
@@ -161,7 +162,7 @@ async function main(){
             else
                 freeCase = listOfEmpties[Math.floor(Math.random() * listOfEmpties.length)];
         } else {
-            var freeCase = new Case.Case(1, i*2+1 + 2*nbPlayers);
+            freeCase = new Case.Case(1, i*2+1 + 2*nbPlayers);
         }
         snakeList.push(new Snake.Snake(freeCase, controlsSnakeAI, SNAKECOLORIA1, SNAKECOLORIA2, true, null, scene, pov));
     }
@@ -191,17 +192,19 @@ async function main(){
 
 
     var snakeDead = false;
+    var envList = [];
     if(gameMode == "classic" || gameMode == "survival"){
         var factor = WORLD.length / 20;
-        new Environnement.Environnement(new Case.Case(-10 * factor, -10 * factor), factor, 0, scene);
-        new Environnement.Environnement(new Case.Case(-10 * factor, 10 * factor), factor, 0, scene);
-        new Environnement.Environnement(new Case.Case(-10 * factor, 30 * factor), factor, 0, scene);
 
-        new Environnement.Environnement(new Case.Case(30 * factor, -10 * factor), factor, 0, scene);
-        new Environnement.Environnement(new Case.Case(30 * factor, 10 * factor), factor, 0, scene);
-        new Environnement.Environnement(new Case.Case(30 * factor, 30 * factor), factor, 0, scene);
-        new Environnement.Environnement(new Case.Case(10 * factor, 30 * factor), factor, Math.PI / 2, scene);
-        new Environnement.Environnement(new Case.Case(10 * factor, -10 * factor), factor, -Math.PI / 2, scene);
+        envList.push(new Environnement.Environnement(new Case.Case(-10 * factor, -10 * factor), factor, 0, scene));
+        envList.push(new Environnement.Environnement(new Case.Case(-10 * factor, 10 * factor), factor, 0, scene));
+        envList.push(new Environnement.Environnement(new Case.Case(-10 * factor, 30 * factor), factor, 0, scene));
+
+        envList.push(new Environnement.Environnement(new Case.Case(30 * factor, -10 * factor), factor, 0, scene));
+        envList.push(new Environnement.Environnement(new Case.Case(30 * factor, 10 * factor), factor, 0, scene));
+        envList.push(new Environnement.Environnement(new Case.Case(30 * factor, 30 * factor), factor, 0, scene));
+        envList.push(new Environnement.Environnement(new Case.Case(10 * factor, 30 * factor), factor, Math.PI / 2, scene));
+        envList.push(new Environnement.Environnement(new Case.Case(10 * factor, -10 * factor), factor, -Math.PI / 2, scene));
     }
 
     var loader = document.getElementById("loader");
@@ -224,7 +227,7 @@ async function main(){
             // On fait grossir le serpent toutes les 3 secondes
             if (new Date().getTime() - lastSpawn > 3000) {
                 lastSpawn = new Date().getTime();
-                for (var i = 0; i < snakeList.length; i++) {
+                for (let i = 0; i < snakeList.length; i++) {
                     snakeList[i].grow();
                     // On met à jour le score des joueurs
                     if (!snakeList[i].isABot) {
@@ -241,7 +244,7 @@ async function main(){
         counterViewChange = tmpCameraInfo[0];
         angle = tmpCameraInfo[1];
 
-        for (var i = 0; i < snakeList.length; i++) {
+        for (let i = 0; i < snakeList.length; i++) {
             time = new Date().getTime();
             // Si le délai entre deux mouvements est écoulé, on fait avancer le serpent
             if (time > snakeList[i].lastTime + snakeList[i].delay) {
@@ -264,7 +267,7 @@ async function main(){
             snakeList[i].movingAnimation(time);
         }
         requestAnimationFrame(loop);
-    }
+    };
 
     // Position initiale de la caméra
     if(gameMode == "classic" || gameMode == "survival"){
@@ -279,7 +282,6 @@ async function main(){
             loop();
         }
     });
-
 }
 
 main();

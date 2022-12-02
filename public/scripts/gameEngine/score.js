@@ -16,6 +16,7 @@ export function buildScore(nb) {
     document.body.appendChild(score);
 }
 
+// Met à jour le score
 export function updateScore(snake) {
     var nb = snake.id;
     var score = document.getElementById("blockScore" + nb);

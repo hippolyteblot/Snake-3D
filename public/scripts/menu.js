@@ -50,7 +50,7 @@ selectNbPlayer.addEventListener('change', function() {
 });
 
 
-// Function permettant de lancer le jeu
+// Fonction permettant de lancer le jeu
 function chooseLevel() {
 
     var menu = document.querySelector('article');
@@ -87,7 +87,6 @@ function startGeneration() {
         article.value = 'selection';
     }
 
-    var article = document.querySelector('#levelSelection');
     article.style.display = 'none';
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');

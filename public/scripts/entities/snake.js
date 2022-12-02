@@ -27,7 +27,8 @@ export class Snake {
 
         this.addControls(controls.up, controls.down, controls.left, controls.right, POV, povDirection);
     }
-
+    
+    // Permet de faire bouger le snake
     move(scene, oldDirection) {
 
         oldDirection = this.direction;
@@ -84,10 +85,12 @@ export class Snake {
         return oldDirection;
     }
 
+    // Le fait grossir (indique qu'il va grossir plus tard)
     grow() {
         this.thinkToGrow = true;
     }
 
+    // Animation permettant un déplacement fluide
     movingAnimation(time) {
         
         var ratio = (time - this.lastTime) / this.delay;
@@ -108,6 +111,7 @@ export class Snake {
         }
     }
 
+    // Verifie les collisions du serpent avec son environnement
     checkCollision(gameMode, snakeList, listOfWalls, apple, calming, potion, listOfEmpties, scene, WORLD) {
 
         if (gameMode != "survival" && apple.block != undefined && this.body[0].x == apple.block.position.x && this.body[0].y === apple.block.position.y) {
@@ -117,7 +121,7 @@ export class Snake {
                 apple.updatePosition(WorldManager.randomFreePosition(listOfEmpties, snakeList));
             else {
                 var highestSnakeX = WorldManager.getHighestSnake(snakeList).body[0].x;
-                var position = WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, highestSnakeX + 3, highestSnakeX + 10)
+                var position = WorldManager.randomFreePositionBetween(listOfEmpties, snakeList, highestSnakeX + 3, highestSnakeX + 10);
                 if(!position) {
                     position = [-100, -100];
                 }
@@ -149,21 +153,21 @@ export class Snake {
             potion.block.position.y = -100;
         }
 
-        for(var i = 0; i < snakeList.length; i++) {
-            for(var j = 0; j < snakeList[i].body.length; j++) {
+        for(let i = 0; i < snakeList.length; i++) {
+            for(let j = 0; j < snakeList[i].body.length; j++) {
                 if(!this.isGhost && !snakeList[i].isGhost && this.body[0] != snakeList[i].body[j] && this.body[0].x === snakeList[i].body[j].x && this.body[0].y === snakeList[i].body[j].y &&snakeList[i].isGhost == false) {
                     return this.kill(snakeList, scene);
                 }
             }
         }
-        for (var i = 1; i < this.body.length; i++) {
+        for (let i = 1; i < this.body.length; i++) {
             if (!this.isGhost && this.body[0].x === this.body[i].x && this.body[0].y === this.body[i].y) {
                 return this.kill(snakeList, scene);
                 
             }
         }
         if(!this.isGhost) {
-            for (var i = 0; i < listOfWalls.length; i++) {
+            for (let i = 0; i < listOfWalls.length; i++) {
                 if (this.body[0].x === listOfWalls[i].x && this.body[0].y === listOfWalls[i].y) {
                     // Dans le cas du mode course, si le jouteur touche le mur droit, il gagne
                     if(gameMode == "race" && listOfWalls[i].x == WORLD.width - 1) {
@@ -182,6 +186,7 @@ export class Snake {
         
     }
 
+    // Tue le serpent
     kill(snakeList, scene) {
         // On récupère l'index de la liste de serpents
         var index = snakeList.indexOf(this);
@@ -193,7 +198,7 @@ export class Snake {
         return true;
     }
 
-
+    // Ajoute ses controles pour qu'un joueur puisse le controler
     addControls(up, down, left, right, POV) {
         var self = this;
         document.addEventListener("keydown", function (event) {
@@ -241,20 +246,21 @@ export class Snake {
         });
     }
 
+    // Transforme le serpent en fantôme (pour 5s)
     ghostMode() {
         // Si le serpent est déjà en mode fantôme, on annule l'ancien timout
         if(this.isGhost) {
             clearTimeout(this.ghostTimeout);
         }
         this.isGhost = true;
-        for(var i = 0; i < this.body.length; i++) {
+        for(let i = 0; i < this.body.length; i++) {
             this.body[i].block.material.transparent = true;
             this.body[i].block.material.opacity = 0.6;
         }
         // Après 5 secondes, on remet le mode normal
         this.ghostTimeout = setTimeout(function() {
             this.isGhost = false;
-            for(var i = 0; i < this.body.length; i++) {
+            for(let i = 0; i < this.body.length; i++) {
                 this.body[i].block.material.transparent = false;
                 this.body[i].block.material.opacity = 1;
             }

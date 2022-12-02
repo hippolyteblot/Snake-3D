@@ -1,4 +1,3 @@
-
 import * as WorldManager from '../gameEngine/worldManager.js';
 
 // Centre la caméra sur le monde
@@ -37,7 +36,7 @@ export function centerCameraOnHighestSnake(snakeList, camera, light) {
     centerCameraOnPlayer(highestSnake, camera);
 }
 
-
+// Caméra à la première personne
 export function povCamera(snake, camera, counterViewChange, angle) {
     if(snake.isABot) {
         return centerCameraOnPlayer(snake, camera);
@@ -45,19 +44,19 @@ export function povCamera(snake, camera, counterViewChange, angle) {
     const FPS = 15;
     const piDividFPS = Math.PI / FPS;
 
-    var povDirection = snake.povDirection
+    var povDirection = snake.povDirection;
     camera.position.x = snake.body[0].block.position.x;
     camera.position.y = snake.body[0].block.position.y;
     camera.position.z = 1;
     camera.lookAt(snake.body[0].block.position);
-    // Rotate of 90°
+    // Rotation de 90°
     camera.rotateX(Math.PI / 2);
 
     var dir = snake.direction;
     if (dir != snake.oldDirection) {
         counterViewChange = FPS;
     }
-    
+    // On récupère l'angle de vue en fonction de la directrion du serpent
     if (dir == "down") {
         angle = Math.PI;
     } else if (dir == "right") {
@@ -69,7 +68,7 @@ export function povCamera(snake, camera, counterViewChange, angle) {
     }
     var oldAngle = angle;
     
-    
+    // Gestion de la rotation de la caméra de manière fluide
     if(counterViewChange > 0) {
         var facteur = FPS - counterViewChange/2;
         
@@ -109,7 +108,7 @@ export function povCamera(snake, camera, counterViewChange, angle) {
     return [counterViewChange, angle];
 
 }
-
+// Choix de la caméra en fonction de l'état et de la configuration de la partie
 export function cameraSelection(snakeList, camera, light, counterViewChange, angle, pov, gameMode, 
     nbPlayers, WORLD, oldDirection) {
     if (nbPlayers == 1 && pov && !snakeList[0].isABot) {

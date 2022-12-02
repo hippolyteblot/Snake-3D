@@ -9,7 +9,7 @@
             "path": "level2.json"
         },
         {
-            "name": "Pacman map",
+            "name": "Minefield",
             "path": "level3.json"
         }
     ]
